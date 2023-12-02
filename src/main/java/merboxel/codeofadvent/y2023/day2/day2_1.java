@@ -1,19 +1,12 @@
 package merboxel.codeofadvent.y2023.day2;
 
-import merboxel.codeofadvent.y2023.day1.day1_1;
-import merboxel.codeofadvent.y2023.day1.day1_2;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
-public class day2 {
+public class day2_1 {
 
     public static void main(String[] args) throws IOException {
 
@@ -37,7 +30,7 @@ public class day2 {
 
     private static Scanner readFileAsScanner(String fileName) throws IOException {
 
-        URL resource = day2.class.getClassLoader().getResource(fileName);
+        URL resource = day2_1.class.getClassLoader().getResource(fileName);
         assert resource != null;
         return new Scanner(resource.openStream());
     }
