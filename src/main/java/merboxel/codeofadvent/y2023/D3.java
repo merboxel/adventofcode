@@ -12,8 +12,8 @@ import static merboxel.codeofadvent.FileReader.readFileAsScanner;
 public class D3 {
 
     public static void main(String[] args) throws IOException {
-        D2P1.run();
-        D2P2.run();
+        D3P1.run();
+        D3P2.run();
     }
 }
 
