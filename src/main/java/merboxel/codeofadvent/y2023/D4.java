@@ -64,9 +64,6 @@ class D4P1 {
 
 class D4P2 {
 
-    static List<List<Part>> engineBlock;
-    static List<List<Gear>> gearsBlock;
-
     public static void main(String[] args) throws IOException {
         run();
     }
