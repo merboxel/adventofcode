@@ -88,14 +88,13 @@ class D5P2 {
         System.out.println("--------------- Part 2 ---------------");
         Scanner sc = readFileAsScanner(2023, 5);
 
-        List<Long> origin = new ArrayList<>();
         List<Seed> seeds = new ArrayList<>();
-        List<Long> handled = new ArrayList<>();
-        List<Long> moved = new ArrayList<>();
         String sSeeds = sc.nextLine();
 
         Pattern pInt = Pattern.compile("\\d+");
         Matcher mSeeds = pInt.matcher(sSeeds);
+
+        Map[][] mapper = new Map[7][];
 
         while(mSeeds.find()) {
             long start = Long.parseLong(mSeeds.group());
@@ -103,87 +102,91 @@ class D5P2 {
             long range = Long.parseLong(mSeeds.group());
             seeds.add(new Seed(start,range));
         }
+        sc.nextLine();
+        sc.nextLine();
+
+        int iMap = 0;
+        List<Map> mapStruct = new ArrayList<>();
 
         while(sc.hasNext()) {
             String line = sc.nextLine();
 
             if(line.isEmpty())
             {
-                origin.removeAll(handled);
-                origin.addAll(moved);
-                moved = new ArrayList<>();
-                handled = new ArrayList<>();
+                mapper[iMap] = mapStruct.toArray(new Map[0]);
+                mapStruct = new ArrayList<>();
+                iMap++;
                 sc.nextLine(); //skipping 'map' string
                 continue;
             }
             Matcher mMap = pInt.matcher(line);
 
-            Long[] map = new Long[3];
+            Long[] tmp = new Long[3];
             mMap.find();
-            map[0] = Long.parseLong(mMap.group());
+            tmp[0] = Long.parseLong(mMap.group());
             mMap.find();
-            map[1] = Long.parseLong(mMap.group());
+            tmp[1] = Long.parseLong(mMap.group());
             mMap.find();
-            map[2] = Long.parseLong(mMap.group());
+            tmp[2] = Long.parseLong(mMap.group());
 
-            for(Seed s: seeds) {
-                s.parse(map);
-            }
+            mapStruct.add(new Map(tmp[0],tmp[1],tmp[2]));
         }
 
-        origin.removeAll(handled);
-        origin.addAll(moved);
+        mapper[iMap] = mapStruct.toArray(new Map[0]);
 
-        System.out.println(origin.stream().min(Comparator.comparingLong(Long::longValue)).orElseThrow());
+        long min = Long.MAX_VALUE;
+
+        for(Seed s: seeds) {
+            for(long l = s.start; l < s.start + s.range; l++) {
+                long parsing = l;
+                nextMap: for(int i = 0; i < 7; i++) {
+                    for(Map m: mapper[i]) {
+                        if (m.hit(parsing)) {
+                            Long parsed = m.parse(parsing);
+                            parsing = parsed;
+                            continue nextMap;
+                        }
+                    }
+                }
+                min = Math.min(min,parsing);
+            }
+        }
+        System.out.println(min);
         System.out.println("--------------------------------------");
     }
 
     static class Seed {
-        long start;
-        long range;
-
-        List<Seed> usedSeed = new ArrayList<>();
-        List<Seed> mapped = new ArrayList<>();
+        public final long start;
+        public final long range;
 
         public Seed(long start, long range) {
             this.start = start;
             this.range = range;
         }
+    }
 
-        public void parse(Long[] map) {
-            if(start + range < map[1] || start > map[1]+map[2])
-                return;
+    static class Map {
 
-            if(start >= map[1] && start+range <= map[1]+map[2]) {
-                mapped.add(new Seed(map[0],range));
-                usedSeed.add(this);
-                return;
-            }
-            if(start >= map[1])
-            {
-                mapped.add(new Seed(map[0]+map[2]-start+map[1],start+map[1]));
-                usedSeed.add(new Seed(map[1]+map[2],start+range-(map[1]-map[2])));
-                return;
-            }
+        public final long dest;
+        public final long src;
+        public final long range;
 
-            if(start+range <= map[1]+map[2])
-            {
-                mapped.add(new Seed(map[0],start+range - map[1]));
-                usedSeed.add(new Seed(map[1],start+range-map[1]));
-                return;
-            }
-
-            if(start < map[1] && start+range > map[1]+map[2])
-            {
-                mapped.add(new Seed(map[0],map[2]));
-                usedSeed.add(new Seed(map[1],map[2]));
-            }
-
-            throw new RuntimeException("impossible!");
+        public Map(Long dest, Long src, Long range) {
+            this.dest = dest;
+            this.src = src;
+            this.range = range;
         }
 
-        public List<Seed> doneParse() {
-            return mapped;
+        public boolean hit(Long target) {
+            return (src <= target && src + range > target);
+        }
+
+        public Long parse(Long target) {
+            if(hit(target))
+            {
+                return dest + (target - src);
+            }
+            return target;
         }
     }
 }
