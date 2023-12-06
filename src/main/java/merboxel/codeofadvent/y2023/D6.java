@@ -27,8 +27,6 @@ class D6P1 {
     }
 
     public static void run() throws IOException {
-
-        int order = 0;
         System.out.println("--------------- Part 1 ---------------");
         Scanner sc = readFileAsScanner(2023, "6.1");
 
