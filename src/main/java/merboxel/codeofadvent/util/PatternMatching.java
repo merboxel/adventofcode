@@ -57,6 +57,6 @@ public class PatternMatching {
     }
 
     public static String[] getWordsAsArray(String line) {
-        return getWords(line).toArray(new String[0]);
+        return line.split(" +");
     }
 }
