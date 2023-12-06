@@ -1,5 +1,7 @@
 package merboxel.codeofadvent.y2023;
 
+import merboxel.codeofadvent.util.PatternMatching;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -30,21 +32,8 @@ class D6P1 {
         System.out.println("--------------- Part 1 ---------------");
         Scanner sc = readFileAsScanner(2023, "6.1");
 
-        List<Long> _time = new ArrayList<>();
-        List<Long> _distance = new ArrayList<>();
-
-        Pattern pInt = Pattern.compile("\\d+");
-        Matcher mInt = pInt.matcher(sc.nextLine());
-        while(mInt.find())
-            _time.add(Long.parseLong(mInt.group()));
-
-        mInt = pInt.matcher(sc.nextLine());
-
-        while(mInt.find())
-            _distance.add(Long.parseLong(mInt.group()));
-
-        Long[] time = _time.toArray(new Long[0]);
-        Long[] distance = _distance.toArray(new Long[0]);
+        Long[] time = PatternMatching.getLongsAsArray(sc.nextLine());
+        Long[] distance = PatternMatching.getLongsAsArray(sc.nextLine());
 
         long totalValue = 1;
 
@@ -73,21 +62,8 @@ class D6P2 {
         System.out.println("--------------- Part 2 ---------------");
         Scanner sc = readFileAsScanner(2023, "6.2");
 
-        List<Long> _time = new ArrayList<>();
-        List<Long> _distance = new ArrayList<>();
-
-        Pattern pInt = Pattern.compile("\\d+");
-        Matcher mInt = pInt.matcher(sc.nextLine());
-        while(mInt.find())
-            _time.add(Long.parseLong(mInt.group()));
-
-        mInt = pInt.matcher(sc.nextLine());
-
-        while(mInt.find())
-            _distance.add(Long.parseLong(mInt.group()));
-
-        Long[] time = _time.toArray(new Long[0]);
-        Long[] distance = _distance.toArray(new Long[0]);
+        Long[] time = PatternMatching.getLongsAsArray(sc.nextLine());
+        Long[] distance = PatternMatching.getLongsAsArray(sc.nextLine());
 
         long totalValue = 1;
 
@@ -95,7 +71,7 @@ class D6P2 {
             for(int j = 0; j < time[i]; j++)
             {
                 if(j * (time[i]-j) > distance[i]) {
-                    totalValue *= (time[i] - 2 * j + 1);
+                    totalValue *= (time[i] - 2L * j + 1);
                     continue next;
                 }
             }
