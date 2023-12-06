@@ -11,6 +11,10 @@ public class D7 {
         D7P1.run();
         D7P2.run();
     }
+
+    static Scanner readFile() throws IOException {
+        return readFileAsScanner(2023, 7);
+    }
 }
 
 class D7P1 {
@@ -23,7 +27,7 @@ class D7P1 {
 
         System.out.println("--------------- Part 1 ---------------");
         long result = 0L;
-        Scanner sc = readFileAsScanner(2023, 7);
+        Scanner sc = D7.readFile();
 
         while(sc.hasNext()) {
 
@@ -43,7 +47,7 @@ class D7P2 {
     public static void run() throws IOException {
         System.out.println("--------------- Part 2 ---------------");
         long result = 0L;
-        Scanner sc = readFileAsScanner(2023, 7);
+        Scanner sc = D7.readFile();
 
         while(sc.hasNext()) {
             
