@@ -42,4 +42,21 @@ public class PatternMatching {
 
         return getLongs(line).toArray(new Long[0]);
     }
+
+    public static List<String> getWords(String line) {
+
+        List<String> matched = new ArrayList<>();
+
+        Pattern pLong = Pattern.compile(" +");
+        Matcher mLong = pLong.matcher(line);
+
+        while(mLong.find())
+            matched.add(mLong.group());
+
+        return matched;
+    }
+
+    public static String[] getWordsAsArray(String line) {
+        return getWords(line).toArray(new String[0]);
+    }
 }
