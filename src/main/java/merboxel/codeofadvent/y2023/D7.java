@@ -131,8 +131,11 @@ class Hand implements Comparable<Hand> {
             if(bucket[i] >= max) {
                 max2 = max;
                 max = bucket[i];
+            } else {
+                if(bucket[i] >= max2) {
+                    max2 = bucket[i];
+                }
             }
-            max = Math.max(max,bucket[i]);
         }
         switch (max) {
             case 5 -> {
