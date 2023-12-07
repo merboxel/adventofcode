@@ -39,7 +39,7 @@ class D7P1 {
             rankingHands.add(new Hand(sc.nextLine(),false));
         }
 
-        Long rank = 1L;
+        long rank = 1L;
         while(!rankingHands.isEmpty()) {
             Hand hand = rankingHands.poll();
 
@@ -68,7 +68,7 @@ class D7P2 {
             rankingHands.add(new Hand(sc.nextLine(), true));
         }
 
-        Long rank = 1L;
+        long rank = 1L;
         while (!rankingHands.isEmpty()) {
             Hand hand = rankingHands.poll();
 
