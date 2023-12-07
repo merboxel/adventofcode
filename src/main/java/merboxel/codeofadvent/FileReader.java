@@ -36,7 +36,7 @@ public class FileReader {
 
     private static void getAoCInputFile(String year, String day) throws IOException {
 
-        if(null == FileReader.class.getClassLoader().getResource(year + "/" + day + ".txt"))
+        if(null != FileReader.class.getClassLoader().getResource(year + "/" + day + ".txt"))
             return;
 
         if(null == FileReader.class.getClassLoader().getResource("session_token.txt"))

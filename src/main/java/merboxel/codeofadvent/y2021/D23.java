@@ -107,28 +107,30 @@ class Maze {
             "C",100,
             "D",1000
     );
+
+    final Set<Integer> unavailable = Set.of(3,5,7,9);
     Chamber[] chambers = new Chamber[20];
 
     public Maze() {
-        chambers[1] = new Chamber();
-        chambers[2] = new Chamber();
-        chambers[3] = new Chamber();
-        chambers[4] = new Chamber();
-        chambers[5] = new Chamber();
-        chambers[6] = new Chamber();
-        chambers[7] = new Chamber();
-        chambers[8] = new Chamber();
-        chambers[9] = new Chamber();
-        chambers[10] = new Chamber();
-        chambers[11] = new Chamber();
-        chambers[12] = new Chamber();
-        chambers[13] = new Chamber();
-        chambers[14] = new Chamber();
-        chambers[15] = new Chamber();
-        chambers[16] = new Chamber();
-        chambers[17] = new Chamber();
-        chambers[18] = new Chamber();
-        chambers[19] = new Chamber();
+        chambers[1] = new Chamber("E");
+        chambers[2] = new Chamber("E");
+        chambers[3] = new Chamber("E");
+        chambers[4] = new Chamber("E");
+        chambers[5] = new Chamber("E");
+        chambers[6] = new Chamber("E");
+        chambers[7] = new Chamber("E");
+        chambers[8] = new Chamber("E");
+        chambers[9] = new Chamber("E");
+        chambers[10] = new Chamber("E");
+        chambers[11] = new Chamber("E");
+        chambers[12] = new Chamber("A");
+        chambers[13] = new Chamber("B");
+        chambers[14] = new Chamber("C");
+        chambers[15] = new Chamber("D");
+        chambers[16] = new Chamber("A");
+        chambers[17] = new Chamber("B");
+        chambers[18] = new Chamber("C");
+        chambers[19] = new Chamber("D");
 
         chambers[1].setRight(chambers[2]);
         chambers[2].setRight(chambers[3]);
@@ -160,10 +162,22 @@ class Maze {
             if(chambers[i].c.equals("E")) {
                 continue;
             }
+            resetMazePerm();
             chambers[i].doNeighbours(0);
             int value = this.value.get(chambers[i].c);
             for(int j = 1; j <= 19; j++) {
+                if(unavailable.contains(j))
+                    continue;
+
+
+
                 if(chambers[j].number != -1) {
+
+                    boolean isInHall = chambers[i].metal.equals("E");
+
+                    if(isInHall && chambers[j].c.equals("E"))
+                        continue;
+
                     char[] perm = current.permutation.toCharArray();
                     perm[j-1] = perm[i-1];
                     perm[i-1] = 'E';
@@ -171,7 +185,6 @@ class Maze {
                     perms.add(new Permutation(current.energy+value*chambers[j].number, String.valueOf(perm)));
                 }
             }
-            resetMazePerm();
         }
         return perms;
     }
@@ -195,6 +208,11 @@ class Chamber {
     int number;
     Chamber left,bot,right,top;
     String c;
+    final String metal;
+
+    public Chamber(String metal) {
+        this.metal = metal;
+    }
 
     public void setChar(String c) {
         this.c = c;
