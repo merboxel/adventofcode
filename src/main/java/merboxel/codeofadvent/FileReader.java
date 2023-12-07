@@ -16,7 +16,7 @@ public class FileReader {
 
     public static Scanner readFileAsScanner(int year, int day) throws IOException {
 
-        getAoCInputFile(Integer.toString(year),Integer.toString(day));
+        //getAoCInputFile(Integer.toString(year),Integer.toString(day));
 
         //TODO Auto loading file from AoC
         URL resource = FileReader.class.getClassLoader().getResource(year+"/"+day+".txt");
@@ -26,7 +26,7 @@ public class FileReader {
 
     public static Scanner readFileAsScanner(int year, String day) throws IOException {
 
-        getAoCInputFile(Integer.toString(year),day);
+        //getAoCInputFile(Integer.toString(year),day);
 
         //TODO Auto loading file from AoC
         URL resource = FileReader.class.getClassLoader().getResource(year+"/"+day+".txt");

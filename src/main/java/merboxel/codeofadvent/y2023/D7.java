@@ -36,24 +36,16 @@ class D7P1 {
         PriorityQueue<Hand> rankingHands = new PriorityQueue<>();
 
         while(sc.hasNext()) {
-            rankingHands.add(new Hand(sc.nextLine()));
+            rankingHands.add(new Hand(sc.nextLine(),false));
         }
 
         Long rank = 1L;
         while(!rankingHands.isEmpty()) {
             Hand hand = rankingHands.poll();
-            System.out.println("----------");
-            System.out.println(rank);
-            System.out.println(hand.bid);
-            System.out.println(hand.bid*rank);
-            System.out.println(hand.hand);
-            System.out.println(Arrays.toString(hand.cards));
-            System.out.println(Arrays.toString(hand.bucket));
 
             result += hand.bid*rank;
             rank++;
         }
-        System.out.println("--------------------------------------");
         System.out.println(result);
         System.out.println("--------------------------------------");
     }
@@ -70,10 +62,19 @@ class D7P2 {
         long result = 0L;
         Scanner sc = D7.readFile();
 
-        while(sc.hasNext()) {
-            
+        PriorityQueue<Hand> rankingHands = new PriorityQueue<>();
+
+        while (sc.hasNext()) {
+            rankingHands.add(new Hand(sc.nextLine(), true));
         }
 
+        Long rank = 1L;
+        while (!rankingHands.isEmpty()) {
+            Hand hand = rankingHands.poll();
+
+            result += hand.bid * rank;
+            rank++;
+        }
         System.out.println(result);
         System.out.println("--------------------------------------");
     }
@@ -87,7 +88,7 @@ class Hand implements Comparable<Hand> {
     final int rank;
     final long bid;
 
-    public Hand(String hand) {
+    public Hand(String hand,boolean joker) {
         String[] _hand = PatternMatching.getWordsAsArray(hand);
 
         bid = Long.parseLong(_hand[1]);
@@ -109,8 +110,13 @@ class Hand implements Comparable<Hand> {
                     bucket[12] ++;
                 }
                 case 'J' -> {
-                    cards[i] = 11;
-                    bucket[11] ++;
+                    if(joker) {
+                        cards[i] = 1;
+                        bucket[1]++;
+                    } else {
+                        cards[i] = 11;
+                        bucket[11]++;
+                    }
                 }
                 case 'T' -> {
                     cards[i] = 10;
@@ -127,7 +133,7 @@ class Hand implements Comparable<Hand> {
     }
     private int calculateRank() {
         int max = 0,max2 = 0;
-        for(int i =0; i < 15; i++) {
+        for(int i =2; i < 15; i++) {
             if(bucket[i] >= max) {
                 max2 = max;
                 max = bucket[i];
@@ -137,6 +143,7 @@ class Hand implements Comparable<Hand> {
                 }
             }
         }
+        max += bucket[1];
         switch (max) {
             case 5 -> {
                 return 6;
