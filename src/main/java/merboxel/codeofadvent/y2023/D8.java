@@ -62,7 +62,7 @@ class D8P2 {
 
     public static void run() throws IOException {
         System.out.println("--------------- Part 2 ---------------");
-        long result = 0;
+        long result;
         Scanner sc = D8.readFile();
 
         Map<String,Node> tree = new HashMap<>();
@@ -70,15 +70,11 @@ class D8P2 {
         char[] pattern = sc.nextLine().toCharArray();
         sc.nextLine();
 
-
         Node[] startWalk = new Node[26];
-        Node[] endWalk = new Node[26];
 
         int indexStart = 0;
-        int indexEnd = 0;
 
         while(sc.hasNext()) {
-
             String[] words = PatternMatching.getWordsAsArray(sc.nextLine());
 
             Node newNode = new Node(words[0],words[2].substring(1,4),words[3].substring(0,3));
@@ -86,25 +82,16 @@ class D8P2 {
                 startWalk[indexStart] = newNode;
                 indexStart++;
             }
-            if(newNode.current.endsWith("Z")) {
-                endWalk[indexEnd] = newNode;
-                indexEnd++;
-            }
-
             tree.put(words[0],newNode);
         }
-
-
         //Find cycles
         List<Long> cycles = new ArrayList<>();
 
-        long cycle;
         for(int entry = 0; entry <indexStart; entry++) {
-            cycle = 0;
+            long cycle = 0;
             do {
                 char direction = pattern[(int) (cycle % pattern.length)];
                 startWalk[entry] = tree.get(startWalk[entry].direction(direction));
-                startWalk[entry].path++;
                 cycle++;
             } while (!startWalk[entry].current.endsWith("Z"));
 
@@ -113,28 +100,26 @@ class D8P2 {
             do {
                 char direction = pattern[(int) (cycle % pattern.length)];
                 startWalk[entry] = tree.get(startWalk[entry].direction(direction));
-                startWalk[entry].path++;
                 cycle++;
             } while (!startWalk[entry].current.endsWith("Z"));
             long inter2 = cycle;
             cycles.add(inter2-inter1);
         }
-        long total = 1L;
-        for(Long i: cycles)
-            total *= i;
-        System.out.println(total);
-
         Long[] arrCycles = cycles.toArray(new Long[0]);
 
-        next : for(int i = 0; ; i++) {
-            result += arrCycles[0];
-            for(Long j: arrCycles) {
-                if(result % j != 0)
-                    continue next;
-            }
-            break;
-        }
+        result = arrCycles[0];
 
+        //Find cycle
+        next : for (Long arrCycle : arrCycles) {
+            long tmp = 0;
+            for (int j = 0; j < arrCycle; j++) {
+                tmp += result;
+                if (tmp % arrCycle == 0) {
+                    result = tmp;
+                    continue next;
+                }
+            }
+        }
         System.out.println(result);
         System.out.println("--------------------------------------");
     }
@@ -144,7 +129,6 @@ class Node {
     String current;
     String left;
     String right;
-    int path = 0;
 
     public Node(String current, String left, String right) {
         this.current = current;
