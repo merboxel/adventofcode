@@ -70,7 +70,7 @@ class D8P2 {
         char[] pattern = sc.nextLine().toCharArray();
         sc.nextLine();
 
-        Node[] startWalk = new Node[26];
+        List<Node> _startWalk = new ArrayList<>();
 
         int indexStart = 0;
 
@@ -79,14 +79,18 @@ class D8P2 {
 
             Node newNode = new Node(words[0],words[2].substring(1,4),words[3].substring(0,3));
             if(newNode.current.endsWith("A")) {
-                startWalk[indexStart] = newNode;
+                _startWalk.add(newNode);
                 indexStart++;
             }
             tree.put(words[0],newNode);
         }
+        Node[] startWalk = _startWalk.toArray(new Node[0]);
+
         //Find cycles
         List<Long> cycles = new ArrayList<>();
 
+        // Cycles of all start locations have the same length
+        // Otherwise we had to do something else...
         for(int entry = 0; entry <indexStart; entry++) {
             long cycle = 0;
             do {
@@ -94,22 +98,13 @@ class D8P2 {
                 startWalk[entry] = tree.get(startWalk[entry].direction(direction));
                 cycle++;
             } while (!startWalk[entry].current.endsWith("Z"));
-
-            long inter1 = cycle;
-
-            do {
-                char direction = pattern[(int) (cycle % pattern.length)];
-                startWalk[entry] = tree.get(startWalk[entry].direction(direction));
-                cycle++;
-            } while (!startWalk[entry].current.endsWith("Z"));
-            long inter2 = cycle;
-            cycles.add(inter2-inter1);
+            cycles.add(cycle);
         }
         Long[] arrCycles = cycles.toArray(new Long[0]);
 
         result = arrCycles[0];
 
-        //Find cycle
+        //Find cycle length where all end in 'Z'
         next : for (Long arrCycle : arrCycles) {
             long tmp = 0;
             for (int j = 0; j < arrCycle; j++) {
