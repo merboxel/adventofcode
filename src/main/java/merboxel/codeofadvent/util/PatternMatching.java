@@ -71,6 +71,29 @@ public class PatternMatching {
         return tmp;
     }
 
+    public static List<Long> getRationNumbersAsLongs(String line) {
+
+        List<Long> matched = new ArrayList<>();
+
+        Pattern pLong = Pattern.compile("-?\\d*\\.?\\d+");
+        Matcher mLong = pLong.matcher(line);
+
+        while(mLong.find())
+            matched.add(Long.parseLong(mLong.group()));
+
+        return matched;
+    }
+
+    public static long[] getRationNumbersAsLongArray(String line) {
+
+        List<Long> longs = getLongsWithNegatives(line);
+        long[] tmp = new long[longs.size()];
+        for(int i = 0; i <longs.size(); i++)
+            tmp[i] = longs.get(i);
+
+        return tmp;
+    }
+
     public static List<String> getWords(String line) {
 
         List<String> matched = new ArrayList<>();
