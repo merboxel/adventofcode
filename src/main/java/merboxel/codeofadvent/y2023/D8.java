@@ -104,7 +104,7 @@ class D8P2 {
 
         result = arrCycles[0];
 
-        //Find cycle length where all end in 'Z'
+        // Find cycle length where all end in 'Z'
         next : for (Long arrCycle : arrCycles) {
             long tmp = 0;
             for (int j = 0; j < arrCycle; j++) {

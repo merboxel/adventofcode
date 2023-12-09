@@ -30,8 +30,8 @@ class D6P1 {
         System.out.println("--------------- Part 1 ---------------");
         Scanner sc = readFileAsScanner(2023, "6.1");
 
-        Long[] time = PatternMatching.getLongsAsArray(sc.nextLine());
-        Long[] distance = PatternMatching.getLongsAsArray(sc.nextLine());
+        long[] time = PatternMatching.getLongsAsArray(sc.nextLine());
+        long[] distance = PatternMatching.getLongsAsArray(sc.nextLine());
 
         long totalValue = 1;
 
@@ -60,8 +60,8 @@ class D6P2 {
         System.out.println("--------------- Part 2 ---------------");
         Scanner sc = readFileAsScanner(2023, "6.2");
 
-        Long[] time = PatternMatching.getLongsAsArray(sc.nextLine());
-        Long[] distance = PatternMatching.getLongsAsArray(sc.nextLine());
+        long[] time = PatternMatching.getLongsAsArray(sc.nextLine());
+        long[] distance = PatternMatching.getLongsAsArray(sc.nextLine());
 
         long totalValue = 1;
 

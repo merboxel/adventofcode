@@ -38,9 +38,37 @@ public class PatternMatching {
         return matched;
     }
 
-    public static Long[] getLongsAsArray(String line) {
+    public static long[] getLongsAsArray(String line) {
 
-        return getLongs(line).toArray(new Long[0]);
+        List<Long> longs = getLongs(line);
+        long[] tmp = new long[longs.size()];
+        for(int i = 0; i <longs.size(); i++)
+            tmp[i] = longs.get(i);
+
+        return tmp;
+    }
+
+    public static List<Long> getLongsWithNegatives(String line) {
+
+        List<Long> matched = new ArrayList<>();
+
+        Pattern pLong = Pattern.compile("-?\\d+");
+        Matcher mLong = pLong.matcher(line);
+
+        while(mLong.find())
+            matched.add(Long.parseLong(mLong.group()));
+
+        return matched;
+    }
+
+    public static long[] getLongsWithNegativesAsArray(String line) {
+
+        List<Long> longs = getLongsWithNegatives(line);
+        long[] tmp = new long[longs.size()];
+        for(int i = 0; i <longs.size(); i++)
+            tmp[i] = longs.get(i);
+
+        return tmp;
     }
 
     public static List<String> getWords(String line) {
