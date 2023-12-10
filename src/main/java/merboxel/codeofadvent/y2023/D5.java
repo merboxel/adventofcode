@@ -28,7 +28,7 @@ public class D5 {
 
             int order = 0;
             System.out.println("--------------- Part 1 ---------------");
-            Scanner sc = readFileAsScanner(2023, 5);
+            Scanner sc = readFile();
 
             List<Long> origin = new ArrayList<>();
             List<Long> handled = new ArrayList<>();
@@ -89,7 +89,7 @@ public class D5 {
 
         public static void run() throws IOException {
             System.out.println("--------------- Part 2 ---------------");
-            Scanner sc = readFileAsScanner(2023, 5);
+            Scanner sc = readFile();
 
             List<Seed> seeds = new ArrayList<>();
             String sSeeds = sc.nextLine();
