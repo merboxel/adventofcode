@@ -3,10 +3,7 @@ package merboxel.codeofadvent.y2023;
 import merboxel.codeofadvent.util.PatternMatching;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.LongStream;
 
 import static merboxel.codeofadvent.FileReader.readFileAsScanner;
@@ -33,49 +30,77 @@ class D10P1 {
         System.out.println("--------------- Part 1 ---------------");
         long result = 0;
         Scanner sc = D10.readFile();
+        List<String> inputFile = new ArrayList<>();
 
         while(sc.hasNext()) {
-            long[] sequenceOrr = PatternMatching.getLongsWithNegativesAsArray(sc.nextLine());
-            long[] tmp = Arrays.copyOf(sequenceOrr,sequenceOrr.length);
-            List<Long> lastDigits = new ArrayList<>();
+            inputFile.add(sc.nextLine());
 
-            lastDigits.add(tmp[tmp.length-1]);
-
-            for(int i = 1; i < sequenceOrr.length; i++) {
-                tmp = Calc.calcDiff(tmp);
-                // System.out.println(Arrays.toString(tmp)); //Debug
-                lastDigits.add(tmp[tmp.length-1]);
-                if(Calc.allZero(tmp))
-                    break;
-            }
-
-            long x = 0;
-            for(long l: lastDigits.reversed()) {
-                //System.out.println(x + " " + l); //Debug
-                x += l;
-            }
-            result += x;
         }
-        System.out.println(result);
+        int endX=-1,endY=-1;
+        int opX=-1,opY=-1;
+        int currX=-1,currY=-1;
+
+        char[][] area = new char[inputFile.size()][];
+        for(int y = 0; y < area.length; y++) {
+            area[y] = inputFile.get(y).toCharArray();
+            for(int x = 0; x < area[y].length; x++) {
+                if('S' == area[y][x]) {
+                    endX = x;
+                    opX = 0;
+                    currX = x;
+                    endY = y;
+                    opY = 1;
+                    currY = y+1;
+                    result++;
+                }
+            }
+        }
+
+        while(!(endX == currX && endY == currY))
+        {
+            int[] next = Pipe.calcNextPipe(area[currY][currX],opX,opY);
+            opX = next[0];
+            opY = next[1];
+            currX += next[0];
+            currY += next[1];
+            result ++;
+        }
+
+        System.out.println(result/2);
         System.out.println("--------------------------------------");
     }
 }
 
-class Calc {
+class Pipe {
 
-    public static boolean allZero(long[] seq){
-        for(long l: seq)
-            if(l != 0L)
-                return false;
-        return true;
-    }
+    public static int[] calcNextPipe(char c, int x, int y) {
 
-    public static long[] calcDiff(long[] seq) {
-        return LongStream.range(0,seq.length-1)
-                .map(i -> seq[((int)i+1)]-seq[((int)i)])
-                .toArray();
+        if (c == '-' || c == '|')
+            return new int[]{x, y};
+        if (c == 'J')
+            if (x == 1)
+                return new int[]{0, -1};
+            else
+                return new int[]{-1, 0};
+        if (c == 'F')
+            if (x == -1)
+                return new int[]{0, 1};
+            else
+                return new int[]{1, 0};
+        if (c == 'L')
+            if (x == -1)
+                return new int[]{0, -1};
+            else
+                return new int[]{1, 0};
+        if (c == '7')
+            if (x == 1)
+                return new int[]{0, 1};
+            else
+                return new int[]{-1, 0};
+        throw new RuntimeException("Impossible '"+c+"'");
     }
 }
+
 
 class D10P2 {
 
@@ -87,29 +112,80 @@ class D10P2 {
         System.out.println("--------------- Part 2 ---------------");
         long result = 0L;
         Scanner sc = D10.readFile();
+        List<String> inputFile = new ArrayList<>();
 
         while(sc.hasNext()) {
-            long[] sequenceOrr = PatternMatching.getLongsWithNegativesAsArray(sc.nextLine());
-            long[] tmp = Arrays.copyOf(sequenceOrr,sequenceOrr.length);
-            List<Long> firstDigits = new ArrayList<>();
-
-            firstDigits.add(tmp[0]);
-
-            for(int i = 1; i < sequenceOrr.length; i++) {
-                tmp = Calc.calcDiff(tmp);
-                // System.out.println(Arrays.toString(tmp)); //Debug
-                firstDigits.add(tmp[0]);
-                if(Calc.allZero(tmp))
-                    break;
-            }
-            long x = 0;
-            for(long l: firstDigits.reversed()) {
-                x = l - x;
-                //System.out.println(x + " " + l); //Debug
-            }
-            result += x;
+            inputFile.add(sc.nextLine());
         }
+        int endX=-1,endY=-1;
+        int opX=-1,opY=-1;
+        int currX=-1,currY=-1;
+
+        char[][] area = new char[inputFile.size()][];
+        boolean[][] pipe = new boolean[inputFile.size()][];
+        for(int y = 0; y < area.length; y++) {
+            area[y] = inputFile.get(y).toCharArray();
+            pipe[y] = new boolean[area[y].length];
+            for(int x = 0; x < area[y].length; x++) {
+                if('S' == area[y][x]) {
+                    endX = x;
+                    opX = 0;
+                    currX = x;//Manual starting position (change on test case)
+                    endY = y;
+                    opY = 1;
+                    currY = y+1;//Manual starting position (change on test case)
+                }
+            }
+        }
+
+        pipe[endY][endX] = true;
+
+        while(!(endX == currX && endY == currY))
+        {
+            pipe[currY][currX] = true;
+            int[] next = Pipe.calcNextPipe(area[currY][currX],opX,opY);
+            opX = next[0];
+            opY = next[1];
+            currX += next[0];
+            currY += next[1];
+        }
+
+        for(int y = 0; y < pipe.length; y++) {
+            boolean withIn = false;
+            char prevC = '.';
+            for(int x = 0; x < pipe[y].length; x++) {
+                if(!pipe[y][x]) {
+                    if(withIn)
+                        result ++;
+                    else
+                        continue;
+                } else {
+                    if(area[y][x] == '|') {
+                        withIn = !withIn;
+                        continue;
+                    }
+                    if(area[y][x] == 'F' || area[y][x] == 'L') {
+                        prevC = area[y][x];
+                        continue;
+                    }
+                    if(area[y][x] == 'J') {
+                        if(prevC == 'F')
+                            withIn = !withIn;
+                        prevC = area[y][x];
+                        continue;
+                    }
+                    if(area[y][x] == '7') {
+                        if(prevC == 'L')
+                            withIn = !withIn;
+                        prevC = area[y][x];
+                        continue;
+                    }
+                }
+            }
+        }
+
         System.out.println(result);
         System.out.println("--------------------------------------");
     }
 }
+
