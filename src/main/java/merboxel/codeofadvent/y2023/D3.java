@@ -12,189 +12,193 @@ import static merboxel.codeofadvent.FileReader.readFileAsScanner;
 public class D3 {
 
     public static void main(String[] args) throws IOException {
-        D3P1.run();
-        D3P2.run();
-    }
-}
-
-class D3P1 {
-
-    static List<List<Part>> engineBlock;
-    static List<List<Integer>> symbolsBlock;
-
-    public static void main(String[] args) throws IOException {
-        run();
+        P1.run();
+        P2.run();
     }
 
-    public static void run() throws IOException {
-        System.out.println("--------------- Part 1 ---------------");
-        Scanner sc = readFileAsScanner(2023, 3);
+    static Scanner readFile() throws IOException {
+        return readFileAsScanner(2023, 3);
+    }
 
-        engineBlock = new ArrayList<>();
-        symbolsBlock = new ArrayList<>();
-        while(sc.hasNext()) {
-            String line = sc.nextLine();
+    static class P1 {
 
-            List<Part> engineLine = new ArrayList<>();
-            List<Integer> symbolLine = new ArrayList<>();
+        static List<List<Part>> engineBlock;
+        static List<List<Integer>> symbolsBlock;
 
-            Pattern pInt = Pattern.compile("\\d+");
-            Matcher mInt = pInt.matcher(line);
-            while(mInt.find()) {
-                engineLine.add(new Part(mInt.start(), mInt.end(), mInt.group()));
-            }
-
-            Pattern pSymbol = Pattern.compile("[^0-9.]");
-            Matcher mSymbol = pSymbol.matcher(line);
-
-            while(mSymbol.find()) {
-                symbolLine.add(mSymbol.start());
-            }
-
-            engineBlock.add(engineLine);
-            symbolsBlock.add(symbolLine);
+        public static void main(String[] args) throws IOException {
+            run();
         }
 
-        System.out.println(calcSumParts());
-        System.out.println("--------------------------------------");
-    }
+        public static void run() throws IOException {
+            System.out.println("--------------- Part 1 ---------------");
+            Scanner sc = readFile();
 
-    private static int calcSumParts() {
+            engineBlock = new ArrayList<>();
+            symbolsBlock = new ArrayList<>();
+            while(sc.hasNext()) {
+                String line = sc.nextLine();
 
-        int engineSizeY = engineBlock.size();
-        int sumEngine = 0;
+                List<Part> engineLine = new ArrayList<>();
+                List<Integer> symbolLine = new ArrayList<>();
 
-        for(int i = 0; i < engineBlock.size();i++) {
-            outer: for(Part enginePart: engineBlock.get(i)) {
-                inner: for (int j = i - 1; j <= i + 1; j++) {
-                    if (j < 0 || j >= engineSizeY)
-                        continue inner;
+                Pattern pInt = Pattern.compile("\\d+");
+                Matcher mInt = pInt.matcher(line);
+                while(mInt.find()) {
+                    engineLine.add(new Part(mInt.start(), mInt.end(), mInt.group()));
+                }
 
-                    for (Integer symbolX : symbolsBlock.get(j)) {
-                        if (enginePart.isEnginePart(symbolX)) {
-                            sumEngine += enginePart.getTotalValue();
-                            continue outer;
+                Pattern pSymbol = Pattern.compile("[^0-9.]");
+                Matcher mSymbol = pSymbol.matcher(line);
+
+                while(mSymbol.find()) {
+                    symbolLine.add(mSymbol.start());
+                }
+
+                engineBlock.add(engineLine);
+                symbolsBlock.add(symbolLine);
+            }
+
+            System.out.println(calcSumParts());
+            System.out.println("--------------------------------------");
+        }
+
+        private static int calcSumParts() {
+
+            int engineSizeY = engineBlock.size();
+            int sumEngine = 0;
+
+            for(int i = 0; i < engineBlock.size();i++) {
+                outer: for(Part enginePart: engineBlock.get(i)) {
+                    inner: for (int j = i - 1; j <= i + 1; j++) {
+                        if (j < 0 || j >= engineSizeY)
+                            continue inner;
+
+                        for (Integer symbolX : symbolsBlock.get(j)) {
+                            if (enginePart.isEnginePart(symbolX)) {
+                                sumEngine += enginePart.getTotalValue();
+                                continue outer;
+                            }
                         }
                     }
                 }
             }
+            return sumEngine;
         }
-        return sumEngine;
-    }
-}
-
-class D3P2 {
-
-    static List<List<Part>> engineBlock;
-    static List<List<Gear>> gearsBlock;
-
-    public static void main(String[] args) throws IOException {
-        run();
     }
 
-    public static void run() throws IOException {
-        System.out.println("--------------- Part 2 ---------------");
-        Scanner sc = readFileAsScanner(2023, 3);
+    static class P2 {
 
-        engineBlock = new ArrayList<>();
-        gearsBlock = new ArrayList<>();
-        while(sc.hasNext()) {
-            String line = sc.nextLine();
+        static List<List<Part>> engineBlock;
+        static List<List<Gear>> gearsBlock;
 
-            List<Part> engineLine = new ArrayList<>();
-            List<Gear> gearLine = new ArrayList<>();
-
-            Pattern pInt = Pattern.compile("\\d+");
-            Matcher mInt = pInt.matcher(line);
-            while(mInt.find()) {
-                engineLine.add(new Part(mInt.start(), mInt.end(), mInt.group()));
-            }
-
-            Pattern pSymbol = Pattern.compile("[^0-9.]");
-            Matcher mSymbol = pSymbol.matcher(line);
-
-            while(mSymbol.find()) {
-                gearLine.add(new Gear(mSymbol.start()));
-            }
-
-            engineBlock.add(engineLine);
-            gearsBlock.add(gearLine);
+        public static void main(String[] args) throws IOException {
+            run();
         }
-        System.out.println(calcSumParts());
-        System.out.println("--------------------------------------");
-    }
 
-    private static int calcSumParts() {
+        public static void run() throws IOException {
+            System.out.println("--------------- Part 2 ---------------");
+            Scanner sc = readFile();
 
-        int engineSizeY = engineBlock.size();
+            engineBlock = new ArrayList<>();
+            gearsBlock = new ArrayList<>();
+            while(sc.hasNext()) {
+                String line = sc.nextLine();
 
-        for(int i = 0; i < engineBlock.size();i++) {
-            outer: for(Part enginePart: engineBlock.get(i)) {
-                inner: for (int j = i - 1; j <= i + 1; j++) {
-                    if (j < 0 || j >= engineSizeY)
-                        continue inner;
+                List<Part> engineLine = new ArrayList<>();
+                List<Gear> gearLine = new ArrayList<>();
 
-                    for (Gear gear : gearsBlock.get(j)) {
-                        if (enginePart.isEnginePart(gear.getPosX())) {
-                            gear.addValue(enginePart);
-                            continue outer;
+                Pattern pInt = Pattern.compile("\\d+");
+                Matcher mInt = pInt.matcher(line);
+                while(mInt.find()) {
+                    engineLine.add(new Part(mInt.start(), mInt.end(), mInt.group()));
+                }
+
+                Pattern pSymbol = Pattern.compile("[^0-9.]");
+                Matcher mSymbol = pSymbol.matcher(line);
+
+                while(mSymbol.find()) {
+                    gearLine.add(new Gear(mSymbol.start()));
+                }
+
+                engineBlock.add(engineLine);
+                gearsBlock.add(gearLine);
+            }
+            System.out.println(calcSumParts());
+            System.out.println("--------------------------------------");
+        }
+
+        private static int calcSumParts() {
+
+            int engineSizeY = engineBlock.size();
+
+            for(int i = 0; i < engineBlock.size();i++) {
+                outer: for(Part enginePart: engineBlock.get(i)) {
+                    inner: for (int j = i - 1; j <= i + 1; j++) {
+                        if (j < 0 || j >= engineSizeY)
+                            continue inner;
+
+                        for (Gear gear : gearsBlock.get(j)) {
+                            if (enginePart.isEnginePart(gear.getPosX())) {
+                                gear.addValue(enginePart);
+                                continue outer;
+                            }
                         }
                     }
                 }
             }
-        }
 
-        int sumEngine = 0;
-        for(List<Gear> gears: gearsBlock)
-        {
-            for(Gear gear: gears) {
-                sumEngine += gear.getTotalValue();
+            int sumEngine = 0;
+            for(List<Gear> gears: gearsBlock)
+            {
+                for(Gear gear: gears) {
+                    sumEngine += gear.getTotalValue();
+                }
             }
+            return sumEngine;
         }
-        return sumEngine;
-    }
-}
-
-class Part {
-    final int posX;
-    final int length;
-    final int totalValue;
-
-    public Part(int startX, int endX,String totalValue) {
-        this.posX = startX;
-        this.length = endX - startX;
-        this.totalValue = Integer.parseInt(totalValue);
     }
 
-    public int getTotalValue() {
-        return totalValue;
+    static class Part {
+        final int posX;
+        final int length;
+        final int totalValue;
+
+        public Part(int startX, int endX,String totalValue) {
+            this.posX = startX;
+            this.length = endX - startX;
+            this.totalValue = Integer.parseInt(totalValue);
+        }
+
+        public int getTotalValue() {
+            return totalValue;
+        }
+
+        public boolean isEnginePart(int symbolX) {
+            return posX - 1 <= symbolX && posX + length >= symbolX;
+        }
     }
 
-    public boolean isEnginePart(int symbolX) {
-        return posX - 1 <= symbolX && posX + length >= symbolX;
-    }
-}
+    static class Gear {
+        private final int posX;
+        private final List<Part> parts;
 
-class Gear {
-    private final int posX;
-    private final List<Part> parts;
+        public Gear(int posX) {
+            this.parts = new ArrayList<>();
+            this.posX = posX;
+        }
 
-    public Gear(int posX) {
-        this.parts = new ArrayList<>();
-        this.posX = posX;
-    }
+        public void addValue(Part part) {
+            parts.add(part);
+        }
 
-    public void addValue(Part part) {
-        parts.add(part);
-    }
+        public int getPosX() {
+            return posX;
+        }
 
-    public int getPosX() {
-        return posX;
-    }
-
-    public int getTotalValue() {
-        if (parts.size() != 2)
-            return 0;
-        return parts.get(0).getTotalValue() * parts.get(1).getTotalValue();
+        public int getTotalValue() {
+            if (parts.size() != 2)
+                return 0;
+            return parts.get(0).getTotalValue() * parts.get(1).getTotalValue();
+        }
     }
 }
