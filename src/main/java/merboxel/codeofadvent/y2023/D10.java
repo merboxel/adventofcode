@@ -46,11 +46,11 @@ class D10P1 {
             for(int x = 0; x < area[y].length; x++) {
                 if('S' == area[y][x]) {
                     endX = x;
-                    opX = 0;
-                    currX = x;//Manual starting position (change on test case)
+                    opX = 0;//Manual starting position (change on test case)
+                    currX = x+opX;
                     endY = y;
-                    opY = 1;
-                    currY = y+1;//Manual starting position (change on test case)
+                    opY = 1;//Manual starting position (change on test case)
+                    currY = y+opY;
                     result++;
                 }
             }
@@ -129,11 +129,11 @@ class D10P2 {
             for(int x = 0; x < area[y].length; x++) {
                 if('S' == area[y][x]) {
                     endX = x;
-                    opX = 0;
-                    currX = x;//Manual starting position (change on test case)
+                    opX = 0;//Manual starting position (change on test case)
+                    currX = x+opX;
                     endY = y;
-                    opY = 1;
-                    currY = y+1;//Manual starting position (change on test case)
+                    opY = 1;//Manual starting position (change on test case)
+                    currY = y+opY;
                 }
             }
         }
