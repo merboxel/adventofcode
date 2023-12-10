@@ -47,10 +47,10 @@ class D10P1 {
                 if('S' == area[y][x]) {
                     endX = x;
                     opX = 0;
-                    currX = x;
+                    currX = x;//Manual starting position (change on test case)
                     endY = y;
                     opY = 1;
-                    currY = y+1;
+                    currY = y+1;//Manual starting position (change on test case)
                     result++;
                 }
             }
