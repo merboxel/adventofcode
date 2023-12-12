@@ -152,10 +152,6 @@ public class D12 {
             System.out.println(result);
             System.out.println("--------------------------------------");
         }
-
-        public static long[][] dp(long[][] dp) {
-            return null;
-        }
         static class DP {
             static long[][] dp;
             static char[] line;
