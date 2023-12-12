@@ -20,9 +20,13 @@ public class PatternMatching {
         return matched;
     }
 
-    public static Integer[] getIntegersAsArray(String line) {
+    public static int[] getIntegersAsArray(String line) {
+        List<Integer> ints = getIntegers(line);
+        int[] tmp = new int[ints.size()];
+        for(int i = 0; i <ints.size(); i++)
+            tmp[i] = ints.get(i);
 
-        return getIntegers(line).toArray(new Integer[0]);
+        return tmp;
     }
 
     public static List<Long> getLongs(String line) {
