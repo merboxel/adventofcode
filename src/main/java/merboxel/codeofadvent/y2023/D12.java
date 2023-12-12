@@ -4,7 +4,6 @@ import merboxel.codeofadvent.util.PatternMatching;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.function.IntFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -146,7 +145,7 @@ public class D12 {
                     System.arraycopy(_damages, 0, damages, i * _damages.length, _damages.length);
                 }
 
-                DP x = new DP(spring.toCharArray(),damages);
+                D12.P2.DP x = new DP(spring.toCharArray(),damages);
                 result += DP.run();
             }
             System.out.println(result);
@@ -187,51 +186,49 @@ public class D12 {
                     }
                     subTotal += dynamic(i+1,_j);
                 } else {
-
-                    int damage = damages[_j];
-
                     switch (line[i]) {
                         case '.' -> {
                             subTotal += dynamic(i + 1, _j);
                         }
                         case '#' -> {
-                            boolean possible = true;
-                            for (int j = 0; j < damage; j++) {
-                                if (i + j >= line.length || line[i + j] == '.') {
-                                    possible = false;
-                                    break;
-                                }
-                            }
-                            if (possible) {
-                                if (_j + 1 == damages.length)
-                                    subTotal += dynamic(i + damage, _j + 1);
-                                else {
-                                    if (i + damage < line.length && line[i + damage] != '#')
-                                        subTotal += dynamic(i + damage + 1, _j + 1);
-                                }
-                            }
+                            subTotal += addDamage(i,_j);
                         }
                         default -> {
-                            boolean possible = true;
-                            for (int j = 0; j < damage; j++) {
-                                if (i + j >= line.length || line[i + j] == '.') {
-                                    possible = false;
-                                    break;
-                                }
-                            }
-                            if (possible) {
-                                if (_j + 1 == damages.length)
-                                    subTotal += dynamic(i + damage, _j + 1);
-                                else {
-                                    if (i + damage < line.length && line[i + damage] != '#')
-                                        subTotal += dynamic(i + damage + 1, _j + 1);
-                                }
-                            }
+                            subTotal += addDamage(i,_j);
                             subTotal += dynamic(i + 1, _j);
                         }
                     }
                 }
                 dp[i][_j] = subTotal;
+
+                return subTotal;
+            }
+            public static boolean validNonDamage(int i) {
+                return (i < line.length && line[i] != '#');
+            }
+
+            public static boolean validDamage(int i, int _j) {
+                if(i + damages[_j]-1 >= line.length)
+                    return false;
+                for(int j = 0; j < damages[_j]; j++)
+                    if(line[i+j] == '.')
+                        return false;
+                return true;
+            }
+
+            public static long addDamage(int i, int _j) {
+                int damage = damages[_j];
+                long subTotal = 0;
+
+                if(validDamage(i,_j)) {
+                    if(_j + 1 < damages.length) {
+                        if(validNonDamage(i+damages[_j])) {
+                            subTotal += dynamic(i + damage + 1, _j + 1);
+                        }
+                    } else {
+                        subTotal += dynamic(i + damage, _j + 1);
+                    }
+                }
 
                 return subTotal;
             }
