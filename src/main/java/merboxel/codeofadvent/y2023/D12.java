@@ -48,7 +48,6 @@ public class D12 {
                 int[] damages = PatternMatching.getIntegersAsArray(line[1]);
 
                 long subTotal = calcPossibilities(springParts, damages);
-                System.out.println(subTotal);
                 result += subTotal;
 
             }
@@ -135,107 +134,111 @@ public class D12 {
             long result = 0L;
             Scanner sc = readFile();
 
-            int count = 0;
-
             while (sc.hasNext()) {
-                count ++;
                 String[] line = PatternMatching.getWordsAsArray(sc.nextLine());
                 String _spring = line[0];
                 String spring = _spring+"?"+_spring+"?"+_spring+"?"+_spring+"?"+_spring;
-
-                Pattern pInt = Pattern.compile("[^\\.]+");
-                Matcher mInt = pInt.matcher(spring);
-                List<String> _springParts = new ArrayList<>();
-
-                while (mInt.find())
-                    _springParts.add(mInt.group());
-
-                String[] springParts = _springParts.toArray(new String[0]);
 
                 int[] _damages = PatternMatching.getIntegersAsArray(line[1]);
                 int[] damages = new int[_damages.length*5];
 
                 for(int i =0; i<5;i++){
-                    for(int j=0; j< _damages.length;j++) {
-                        damages[i*_damages.length+j] = _damages[j];
-                    }
+                    System.arraycopy(_damages, 0, damages, i * _damages.length, _damages.length);
                 }
 
-                long subTotal = calcPossibilities(springParts, damages);
-                System.out.println(count);
-                System.out.println(subTotal);
-                result += subTotal;
-
+                DP x = new DP(spring.toCharArray(),damages);
+                result += DP.run();
             }
             System.out.println(result);
             System.out.println("--------------------------------------");
         }
 
-        public static long calcPossibilities(String[] parts, int[] broken) {
-
-            if (broken.length == 0) {
-                for (String part : parts) {
-                    if (possibleCombinations(part.toCharArray(), 0, new int[0], false) == 0)
-                        return 0;
-                }
-                return 1;
-            }
-
-            if (parts.length == 0)
-                return 0;
-
-            long subTotal = 0;
-
-            long comb1 = possibleCombinations(parts[0].toCharArray(), 0, new int[0], false);
-            if (comb1 != 0L) {
-                long comb2 = calcPossibilities(Arrays.stream(parts).skip(1).toArray(String[]::new), broken);
-                subTotal += comb1 * comb2;
-            }
-            for (int i = 0; i < broken.length; i++) {
-
-                long comb3 = possibleCombinations(parts[0].toCharArray(), 0, Arrays.stream(broken).limit(i + 1).toArray(), false);
-                if (comb3 != 0) {
-                    long comb4 = calcPossibilities(Arrays.stream(parts).skip(1).toArray(String[]::new), Arrays.stream(broken).skip(i + 1).toArray());
-                    subTotal += comb3 * comb4;
-                }
-            }
-
-            return subTotal;
+        public static long[][] dp(long[][] dp) {
+            return null;
         }
-
-        public static long possibleCombinations(char[] part, int index, int[] broken, boolean prevBroken) {
-
-            if (index > part.length)
-                return 0;
-
-            if (broken.length == 0) {
-                for (int i = index; i < part.length; i++)
-                    if (part[i] == '#')
-                        return 0;
-                return 1;
+        static class DP {
+            static long[][] dp;
+            static char[] line;
+            static int[] damages;
+            public DP(char[] line,int[] damages) {
+                DP.line = line;
+                DP.damages = damages;
+                dp = new long[line.length+1][damages.length+1];
+                for (long[] longs : dp) {
+                    Arrays.fill(longs, -1);
+                }
+                dp[line.length][damages.length] = 1;
+                for(int i = 0; i < damages.length; i++)
+                    dp[line.length][i] = 0;
+            }
+            public static long run() {
+                return dynamic(0,0);
             }
 
-            try {
-                if (prevBroken) {
-                    if (part[index] == '#') {
+            public static long dynamic(int i, int _j) {
+                long subTotal = 0;
+
+                if(i > dp.length)
+                    return 0;
+
+                if(dp[i][_j] != -1)
+                    return dp[i][_j];
+
+                if(_j == damages.length) {
+                    if(line[i] == '#') {
+                        dp[i][_j] = 0;
                         return 0;
                     }
-                    index++;
+                    subTotal += dynamic(i+1,_j);
+                } else {
+
+                    int damage = damages[_j];
+
+                    switch (line[i]) {
+                        case '.' -> {
+                            subTotal += dynamic(i + 1, _j);
+                        }
+                        case '#' -> {
+                            boolean possible = true;
+                            for (int j = 0; j < damage; j++) {
+                                if (i + j >= line.length || line[i + j] == '.') {
+                                    possible = false;
+                                    break;
+                                }
+                            }
+                            if (possible) {
+                                if (_j + 1 == damages.length)
+                                    subTotal += dynamic(i + damage, _j + 1);
+                                else {
+                                    if (i + damage < line.length && line[i + damage] != '#')
+                                        subTotal += dynamic(i + damage + 1, _j + 1);
+                                }
+                            }
+                        }
+                        default -> {
+                            boolean possible = true;
+                            for (int j = 0; j < damage; j++) {
+                                if (i + j >= line.length || line[i + j] == '.') {
+                                    possible = false;
+                                    break;
+                                }
+                            }
+                            if (possible) {
+                                if (_j + 1 == damages.length)
+                                    subTotal += dynamic(i + damage, _j + 1);
+                                else {
+                                    if (i + damage < line.length && line[i + damage] != '#')
+                                        subTotal += dynamic(i + damage + 1, _j + 1);
+                                }
+                            }
+                            subTotal += dynamic(i + 1, _j);
+                        }
+                    }
                 }
-            } catch (Exception ignored) {
+                dp[i][_j] = subTotal;
+
+                return subTotal;
             }
-
-            long subTotal = 0;
-
-            //Only skip if not broken
-            try {
-                if (part[index] != '#')
-                    subTotal += possibleCombinations(part, index + 1, broken, false);
-                subTotal += possibleCombinations(part, index + broken[0], Arrays.stream(broken).skip(1).toArray(), true);
-            } catch (Exception ignored) {
-            }
-
-            return subTotal;
         }
     }
 }
