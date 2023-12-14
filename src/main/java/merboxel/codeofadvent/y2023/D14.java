@@ -52,7 +52,6 @@ public class D14 {
                     }
                 }
             }
-
             System.out.println(result);
             System.out.println("--------------------------------------");
         }
@@ -77,19 +76,17 @@ public class D14 {
 
             char[][] area = _area.stream().map(String::toCharArray).toArray(char[][]::new);
             Map<String,String> cycles = new HashMap<>();
-            String prevArea = toString(area);
+            String prevArea = Arrays.deepToString(area);
 
             for(int i = 0; i < 1000000000; i++) {
                 if(cycles.containsKey(prevArea)) {
-                    prevArea = cycles.get(prevArea);
-                    area = area;
                     break;
                 }
-                area = rollNorth(area);
-                area = rollWest(area);
-                area = rollSouth(area);
-                area = rollEast(area);
-                String currentArea = toString(area);
+                rollNorth(area);
+                rollWest(area);
+                rollSouth(area);
+                rollEast(area);
+                String currentArea = Arrays.deepToString(area);
                 cycles.put(prevArea,currentArea);
                 prevArea = currentArea;
             }
@@ -104,25 +101,16 @@ public class D14 {
             }
 
             for(int i = 0; i < (1000000000 - cycles.size()) % cycleLength; i++) {
-                area = rollNorth(area);
-                area = rollWest(area);
-                area = rollSouth(area);
-                area = rollEast(area);
+                rollNorth(area);
+                rollWest(area);
+                rollSouth(area);
+                rollEast(area);
             }
 
             for(int x = 0; x < area[0].length; x++) {
-                int boulders = 0;
-                int square = 0;
                 for(int y = 0; y < area.length; y++) {
                     if(area[y][x] == 'O') {
                         result += area.length - y;
-                        boulders ++;
-                        continue;
-                    }
-                    if(area[y][x] == '#') {
-                        boulders = 0;
-                        square = y+1;
-                        continue;
                     }
                 }
             }
@@ -130,7 +118,7 @@ public class D14 {
             System.out.println("--------------------------------------");
         }
 
-        public static char[][] rollNorth(char[][] area) {
+        public static void rollNorth(char[][] area) {
             for(int y = 0; y < area[0].length; y++) {
                 int boulders = 0;
                 int square = 0;
@@ -148,10 +136,9 @@ public class D14 {
                     }
                 }
             }
-            return area;
         }
 
-        public static char[][] rollSouth(char[][] area) {
+        public static void rollSouth(char[][] area) {
             for(int y = area[0].length -1 ; y >= 0; y--) {
                 int boulders = 0;
                 int square = area[0].length -1;
@@ -169,10 +156,9 @@ public class D14 {
                     }
                 }
             }
-            return area;
         }
 
-        public static char[][] rollWest(char[][] area) {
+        public static void rollWest(char[][] area) {
             for(int x = 0; x < area.length; x++) {
                 int boulders = 0;
                 int square = 0;
@@ -190,10 +176,9 @@ public class D14 {
                     }
                 }
             }
-            return area;
         }
 
-        public static char[][] rollEast(char[][] area) {
+        public static void rollEast(char[][] area) {
             for(int x = 0; x < area.length; x++) {
                 int boulders = 0;
                 int square = area.length-1;
@@ -211,15 +196,6 @@ public class D14 {
                     }
                 }
             }
-            return area;
-        }
-
-        public static String toString(char[][] area) {
-            StringBuilder sb = new StringBuilder();
-            for(char[] line:area) {
-                sb.append(Arrays.deepToString(area));
-            }
-            return sb.toString();
         }
     }
 }
