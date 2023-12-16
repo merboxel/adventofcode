@@ -285,28 +285,28 @@ public class D16 {
             int y = currPos[0];
 
             if(dir[1] == -1) {
-                if(((hit[y][x] >>> 0) & 1) == 1) {
+                if((hit[y][x] & 1) == 1) {
                     return true;
                 }
                 hit[y][x] += 1;
                 return false;
             }
             if(dir[1] == 1) {
-                if (((hit[y][x] >>> 1) & 1) == 1) {
+                if ((hit[y][x] & 2) == 2) {
                     return true;
                 }
                 hit[y][x] += 2;
                 return false;
             }
             if(dir[0] == -1) {
-                if(((hit[y][x] >>> 2) & 1) == 1) {
+                if((hit[y][x] & 4) == 4) {
                     return true;
                 }
                 hit[y][x] += 4;
                 return false;
             }
             if(dir[0] == 1) {
-                if(((hit[y][x] >>> 3) & 1) == 1) {
+                if((hit[y][x] & 8) == 8) {
                     return true;
                 }
                 hit[y][x] += 8;
