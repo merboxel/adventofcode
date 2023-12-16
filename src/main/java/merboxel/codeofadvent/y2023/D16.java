@@ -166,93 +166,92 @@ public class D16 {
             while (sc.hasNext()) {
                 lines.add(sc.nextLine());
             }
-            //Top
+
             for(int i = 0; i < lines.size(); i++) {
-                int[] currPos = new int[]{0, i};
-                int[] dir = new int[]{1, 0};
-                char[][] grid = lines.stream().map(String::toCharArray).toArray(char[][]::new);
-                int[][] hit = new int[grid.length][grid[0].length];
-
-                beam(grid, hit, currPos, dir);
-
-                long subTotal = 0;
-                for (int[] row : hit)
-                    for (int cell : row)
-                        if (cell > 0)
-                            subTotal++;
-                result = Math.max(result,subTotal);
+                //Top
+                result = Math.max(
+                        result,
+                        calcEnergized(
+                                beam(
+                                        lines.stream().map(String::toCharArray).toArray(char[][]::new),
+                                        new int[lines.size()][lines.get(0).length()],
+                                        new int[]{0, i},
+                                        new int[]{1, 0}
+                                )
+                        )
+                );
+                //Bot
+                result = Math.max(
+                        result,
+                        calcEnergized(
+                                beam(
+                                        lines.stream().map(String::toCharArray).toArray(char[][]::new),
+                                        new int[lines.size()][lines.get(0).length()],
+                                        new int[]{lines.get(i).length()-1, i},
+                                        new int[]{-1, 0}
+                                )
+                        )
+                );
             }
-            //Bot
-            for(int i = 0; i < lines.size(); i++) {
-                int[] currPos = new int[]{lines.get(i).length()-1, i};
-                int[] dir = new int[]{-1, 0};
-                char[][] grid = lines.stream().map(String::toCharArray).toArray(char[][]::new);
-                int[][] hit = new int[grid.length][grid[0].length];
 
-                beam(grid, hit, currPos, dir);
-
-                long subTotal = 0;
-                for (int[] row : hit)
-                    for (int cell : row)
-                        if (cell > 0)
-                            subTotal++;
-                result = Math.max(result,subTotal);
-            }
-            //Right
             for(int i = 0; i < lines.get(0).length(); i++) {
-                int[] currPos = new int[]{i, 0};
-                int[] dir = new int[]{-1, 0};
-                char[][] grid = lines.stream().map(String::toCharArray).toArray(char[][]::new);
-                int[][] hit = new int[grid.length][grid[0].length];
-
-                beam(grid, hit, currPos, dir);
-
-                long subTotal = 0;
-                for (int[] row : hit)
-                    for (int cell : row)
-                        if (cell > 0)
-                            subTotal++;
-                result = Math.max(result,subTotal);
-            }
-            //Left
-            for(int i = 0; i < lines.get(0).length(); i++) {
-                int[] currPos = new int[]{i, lines.get(0).length()-1};
-                int[] dir = new int[]{-1, 0};
-                char[][] grid = lines.stream().map(String::toCharArray).toArray(char[][]::new);
-                int[][] hit = new int[grid.length][grid[0].length];
-
-                beam(grid, hit, currPos, dir);
-
-                long subTotal = 0;
-                for (int[] row : hit)
-                    for (int cell : row)
-                        if (cell > 0)
-                            subTotal++;
-                result = Math.max(result,subTotal);
+                //Right
+                result = Math.max(
+                        result,
+                        calcEnergized(
+                                beam(
+                                        lines.stream().map(String::toCharArray).toArray(char[][]::new),
+                                        new int[lines.size()][lines.get(0).length()],
+                                        new int[]{i, 0},
+                                        new int[]{-1, 0}
+                                )
+                        )
+                );
+                //Left
+                result = Math.max(
+                        result,
+                        calcEnergized(
+                                beam(
+                                        lines.stream().map(String::toCharArray).toArray(char[][]::new),
+                                        new int[lines.size()][lines.get(0).length()],
+                                        new int[]{i, lines.get(0).length()-1},
+                                        new int[]{-1, 0}
+                                )
+                        )
+                );
             }
             System.out.println(result);
             System.out.println("--------------------------------------");
         }
 
-        public static void beam(char[][] grid, int[][] hit, int[] currPos, int[] dir) {
+        public static long calcEnergized(int[][] hit) {
+            long subTotal = 0;
+            for (int[] row : hit)
+                for (int cell : row)
+                    if (cell > 0)
+                        subTotal++;
+            return subTotal;
+        }
+
+        public static int[][] beam(char[][] grid, int[][] hit, int[] currPos, int[] dir) {
 
             int x = currPos[1];
             int y = currPos[0];
 
             try {
                 if(isCycle(hit,currPos,dir))
-                    return;
+                    return hit;
 
                 switch (grid[y][x]) {
                     case '.' -> {
                         beam(grid,hit,new int[] {y+dir[0], x+dir[1]},dir);
                     }
                     case '/' -> {
-                        int[] newDir = hitMirror1(dir);
+                        int[] newDir = (dir[1] != 0) ? new int[] { -dir[1],0} : new int[] { 0,-dir[0]};
                         beam(grid,hit,new int[] {y + newDir[0], x + newDir[1]}, newDir);
                     }
                     case '\\' -> {
-                        int[] newDir = hitMirror2(dir);
+                        int[] newDir = (dir[1] != 0) ? new int[] {dir[1], 0} : new int[] {0, dir[0]};
                         beam(grid,hit,new int[] {y + newDir[0], x + newDir[1]}, newDir);
                     }
                     case '-' -> {
@@ -277,6 +276,7 @@ public class D16 {
                     }
                 }
             } catch (ArrayIndexOutOfBoundsException ignored) { }
+            return hit;
         }
 
         public static boolean isCycle(int[][] hit,int[] currPos,  int[] dir) {
@@ -313,20 +313,6 @@ public class D16 {
                 return false;
             }
             throw new RuntimeException("Wrong direction detected");
-        }
-
-        // '/'
-        public static int[] hitMirror1(int[] dir) {
-            if(dir[1] != 0)
-                return new int[] { -dir[1],0  };
-            return new int[] { 0,-dir[0]};
-        }
-
-        // '\'
-        public static int[] hitMirror2(int[] dir) {
-            if(dir[1] != 0)
-                return new int[] { dir[1], 0 };
-            return new int[] { 0, dir[0]};
         }
     }
 }
