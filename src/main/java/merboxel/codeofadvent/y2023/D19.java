@@ -250,12 +250,12 @@ public class D19 {
 //                System.out.println("sign: '"+sign+"', value: '"+value+"'");
 //                System.out.println("start: ["+range[0]+","+range[1]+"]");
                 if(sign == '<') {
-                    if(range[1] < value) {
-                        range[1] = -1;
-                        list.add(new SetPart(new Part(part.map),next));
-                    } else if(range[0] >= value) {
-                        range[1] = -1;
-                    } else {
+//                    if(range[1] < value) {
+//                        range[1] = -1;
+//                        list.add(new SetPart(new Part(part.map),next));
+//                    } else if(range[0] >= value) {
+//                        range[1] = -1;
+//                    } else {
                         Part p = new Part(part.map);
                         p.setMapElem(id, new int[]{range[0], value - 1});
                         int tmp = range[0];
@@ -263,15 +263,15 @@ public class D19 {
 
 //                        System.out.println("split: ["+tmp+","+(value - 1)+"]");
                         list.add(new SetPart(p,next));
-                    }
+//                    }
                 }
                 if(sign == '>'){
-                    if(range[1] < value) {
-                        range[1] = -1;
-                    }else if(range[0] >= value) {
-                        range[1] = -1;
-                        list.add(new SetPart(new Part(part.map),next));
-                    } else {
+//                    if(range[1] < value) {
+//                        range[1] = -1;
+//                    }else if(range[0] >= value) {
+//                        range[1] = -1;
+//                        list.add(new SetPart(new Part(part.map),next));
+//                    } else {
                         Part p = new Part(part.map);
                         p.setMapElem(id, new int[]{value + 1, range[1]});
                         int tmp = range[1];
@@ -280,7 +280,7 @@ public class D19 {
 
                         list.add(new SetPart(p, next));
                     }
-                }
+//                }
 //                System.out.println("end: ["+range[0]+","+range[1]+"]");
 //                System.out.println("-----------------------");
                 return list;
