@@ -166,7 +166,7 @@ public class D19 {
 
         public static void run() throws IOException {
             System.out.println("--------------- Part 2 ---------------");
-            long result = 0L;
+            BigInteger result = new BigInteger("0");
             Scanner sc = readFile();
             Map<String, WorkFlows> workFlows = new HashMap<>();
 
@@ -179,10 +179,27 @@ public class D19 {
                 workFlows.put(parts[0],new WorkFlows(parts[1]));
             }
 
-            Part all = new Part();
+            Stack<SetPart> stack = new Stack<>();
+
+            stack.add(new SetPart(new Part(), "in"));
+
+            while(!stack.isEmpty()) {
+                SetPart elem = stack.pop();
+                if(elem.nameWorkflow.equals("R")) {
+                    continue;
+                }
+                if(elem.nameWorkflow.equals("A")) {
+                    BigInteger x = elem.part.totalValue();
+                    result = result.add(x);
+                    continue;
+                }
+//                System.out.println("nameWorkFlow: '"+elem.nameWorkflow+"'");
+                WorkFlows workFlow = workFlows.get(elem.nameWorkflow);
+                stack.addAll(workFlow.calcRange(elem.part));
+            }
 
 
-            System.out.println(all.totalValue());
+            System.out.println(result);
             System.out.println("--------------------------------------");
         }
 
@@ -196,63 +213,134 @@ public class D19 {
 
                 def = parts[parts.length-1];
             }
+
+            public List<SetPart> calcRange(Part part) {
+                List<SetPart> list = new ArrayList<>();
+                for(WorkFlow workFlow: workFlows) {
+                    if(!part.isValid()) {
+                        break;
+                    }
+                    list.addAll(workFlow.calcRange(part));
+                }
+                if(part.isValid()) {
+                    list.add(new SetPart(part,def));
+                }
+                return list;
+            }
         }
         static class WorkFlow {
             char id;
             char sign;
-            long value;
+            int value;
             String next;
 
             public WorkFlow(String s) {
                 id = s.charAt(0);
                 sign = s.charAt(1);
-                value = Long.parseLong(s.substring(2).split(":")[0]);
+                value = Integer.parseInt(s.substring(2).split(":")[0]);
                 next = s.substring(2).split(":")[1];
+            }
+
+            public List<SetPart> calcRange(Part part) {
+                int[] range = part.map.get(id);
+
+                List<SetPart> list = new ArrayList<>();
+
+//                System.out.println("-----------------------");
+//                System.out.println("sign: '"+sign+"', value: '"+value+"'");
+//                System.out.println("start: ["+range[0]+","+range[1]+"]");
+                if(sign == '<') {
+                    if(range[1] < value) {
+                        range[1] = -1;
+                        list.add(new SetPart(new Part(part.map),next));
+                    } else if(range[0] >= value) {
+                        range[1] = -1;
+                    } else {
+                        Part p = new Part(part.map);
+                        p.setMapElem(id, new int[]{range[0], value - 1});
+                        int tmp = range[0];
+                        range[0] = value;
+
+//                        System.out.println("split: ["+tmp+","+(value - 1)+"]");
+                        list.add(new SetPart(p,next));
+                    }
+                }
+                if(sign == '>'){
+                    if(range[1] < value) {
+                        range[1] = -1;
+                    }else if(range[0] >= value) {
+                        range[1] = -1;
+                        list.add(new SetPart(new Part(part.map),next));
+                    } else {
+                        Part p = new Part(part.map);
+                        p.setMapElem(id, new int[]{value + 1, range[1]});
+                        int tmp = range[1];
+                        range[1] = value;
+//                        System.out.println("split: ["+(value + 1)+","+tmp+"]");
+
+                        list.add(new SetPart(p, next));
+                    }
+                }
+//                System.out.println("end: ["+range[0]+","+range[1]+"]");
+//                System.out.println("-----------------------");
+                return list;
+            }
+        }
+
+        static class SetPart {
+            Part part;
+            String nameWorkflow;
+
+            public SetPart(Part part, String nameWorkflow) {
+                this.part = part;
+                this.nameWorkflow = nameWorkflow;
             }
         }
 
         static class Part {
-            int[] x,m,a,s;
+            Map<Character,int[]> map = new HashMap<>();
 
             public Part() {
-                x = new int[] {1,4000};
-                m = new int[] {1,4000};
-                a = new int[] {1,4000};
-                s = new int[] {1,4000};
+                map.put('x',new int[] {1,4000});
+                map.put('m',new int[] {1,4000});
+                map.put('a',new int[] {1,4000});
+                map.put('s',new int[] {1,4000});
             }
 
             public Part(int[] x, int[] m, int[] a, int[] s) {
-                this.x = x;
-                this.m = m;
-                this.a = a;
-                this.s = s;
+                map.put('x',x);
+                map.put('m',m);
+                map.put('a',a);
+                map.put('s',s);
+            }
+
+            public Part(Map<Character,int[]> map) {
+                for(Character c: map.keySet()) {
+                    this.map.put(c,map.get(c).clone());
+                }
+            }
+
+            public void setMapElem(char c, int[] range) {
+                this.map.put(c,range);
             }
 
             public boolean isValid() {
-                return (x[1] - x[0]) > -1
+                return (map.get('x')[1] - map.get('x')[0]) > -1
                         &&
-                        (m[1] - m[0]) > -1
+                        (map.get('m')[1] - map.get('m')[0]) > -1
                         &&
-                        (a[1] - a[0]) > -1
+                        (map.get('a')[1] - map.get('a')[0]) > -1
                         &&
-                        (s[1] - s[0]) > -1;
+                        (map.get('s')[1] - map.get('s')[0]) > -1;
             }
 
             public BigInteger totalValue() {
                 if(!isValid())
                     return BigInteger.ZERO;
-                long sumX = 0L;
-                long sumM = 0L;
-                long sumA = 0L;
-                long sumS = 0L;
-                for(int i = x[0]; i <= x[1]; i ++)
-                    sumX += i;
-                for(int i = m[0]; i <= m[1]; i ++)
-                    sumM += i;
-                for(int i = a[0]; i <= a[1]; i ++)
-                    sumA += i;
-                for(int i = s[0]; i <= s[1]; i ++)
-                    sumS += i;
+                long sumX = map.get('x')[1] - map.get('x')[0]+1;
+                long sumM = map.get('m')[1] - map.get('m')[0]+1;
+                long sumA = map.get('a')[1] - map.get('a')[0]+1;
+                long sumS = map.get('s')[1] - map.get('s')[0]+1;
                 return BigInteger.valueOf(sumX).multiply(BigInteger.valueOf(sumM)).multiply(BigInteger.valueOf(sumA)).multiply(BigInteger.valueOf(sumS));
             }
         }
