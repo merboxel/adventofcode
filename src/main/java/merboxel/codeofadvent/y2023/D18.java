@@ -58,9 +58,8 @@ public class D18 {
                 }
             }
 
-            //int[][] grid = new int[maxPos[1]-minPos[1]+1][maxPos[0]-minPos[0]+1];
-            int[][] grid = new int[500][500];
-            pos = new int[] {220,220};
+            int[][] grid = new int[maxPos[1]-minPos[1]+1][maxPos[0]-minPos[0]+1];
+            pos = new int[] {-minPos[0],-minPos[1]};
             for(int[] line : grid)
                 Arrays.fill(line, -1);
 
@@ -153,12 +152,106 @@ public class D18 {
             long result = 0L;
             Scanner sc = readFile();
 
-            List<String> lines = new ArrayList<>();
+            List<String[]> lines = new ArrayList<>();
 
             while (sc.hasNext()) {
-                lines.add(sc.nextLine());
+                lines.add(sc.nextLine().split(" "));
             }
+            long[] pos = {0,0};
+            long[] minPos = {0,0};
+            long[] maxPos = {0,0};
 
+            for(String[] line: lines) {
+                switch(line[2].charAt(7)) {
+                    case '0' -> {
+                        pos[0] += Long.decode(line[2].substring(1,7));
+                        maxPos[0] = Math.max(maxPos[0],pos[0]);
+                    }
+                    case '2' -> {
+                        pos[0] -= Long.decode(line[2].substring(1,7));
+                        minPos[0] = Math.min(minPos[0],pos[0]);
+                    }
+                    case '1' -> {
+                        pos[1] += Long.decode(line[2].substring(1,7));
+                        maxPos[1] = Math.max(maxPos[1],pos[1]);
+                    }
+                    case '3' -> {
+                        pos[1] -= Long.decode(line[2].substring(1,7));
+                        minPos[1] = Math.min(minPos[1],pos[1]);
+                    }
+                }
+            }
+            pos = new long[] {-minPos[0],-minPos[1]};
+
+            char prev = 'U';
+            int dir = 1; //outside
+            result = 0;
+
+            for(String[] line: lines) {
+                long trenchLength = Long.decode(line[2].substring(1,7));
+                int instruction = Integer.parseInt(line[2].charAt(7)+"");
+                switch(instruction) {
+                    case 0 -> {//Right
+                        if(prev == 'D') {
+                            dir = Math.floorMod(dir + 1, 4);
+                        }
+                        else {
+                            dir = Math.floorMod(dir - 1, 4);
+                        }
+                        if (dir == 0 && prev == 'D')
+                            result --;
+                        result -= pos[0];
+                        prev = 'R';
+                        pos[0] += trenchLength;
+                    }
+                    case 2 -> {//Left
+                        pos[0] -= trenchLength;
+                        if(prev == 'D') {
+                            dir = Math.floorMod(dir - 1, 4);
+                        } else {
+                            dir = Math.floorMod(dir + 1, 4);
+                        }
+                        result -= pos[0];
+                        prev = 'L';
+                    }
+                    case 1 -> {//Down
+                        if(prev == 'R')
+                            dir = Math.floorMod(dir - 1, 4);
+                        else
+                            dir = Math.floorMod(dir + 1, 4);
+
+                        if(dir == 1) {
+                            result -= (trenchLength-1)*pos[0];
+                        } else {
+                            result += (trenchLength+1)*(pos[0]+1);
+                            if(prev == 'L')
+                                result --;
+                        }
+                        prev = 'D';
+                        pos[1] += trenchLength;
+                    }
+                    case 3 -> {//Up
+                        if(prev == 'R')
+                            dir = Math.floorMod(dir + 1, 4);
+                        else
+                            dir = Math.floorMod(dir - 1, 4);
+
+                        if(dir == 3) {
+                            result += (trenchLength+1)*(pos[0]+1);
+                            if(prev == 'L')
+                                result --;
+                        } else {
+                            result -= (trenchLength-1)*pos[0];
+                        }
+                        prev = 'U';
+                        pos[1] -= trenchLength;
+                    }
+                }
+//                System.out.println("Direction: "+ dir);
+//                System.out.println("Operation: "+instruction);
+//                System.out.println("Trench length: "+trenchLength);
+//                System.out.println(result);
+            }
             System.out.println(result);
             System.out.println("--------------------------------------");
         }
