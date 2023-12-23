@@ -154,26 +154,21 @@ public class D23 {
                     p.z = 0;
                 }
 
-                if(walkWay[(int)p.y][(int)p.x]) {
+                if(walkWay[(int)p.y][(int)p.x])
                     continue;
-                } else {
+                else
                     walkWay[(int)p.y][(int)p.x] = true;
-                }
 
                 boolean nextNode = grid[(int) p.y][(int) p.x] != '.';
 
-                if(validPath(grid,p,new int[] {-1,0},'<')) {
+                if(validPath(grid,p,new int[] {-1,0},'<'))
                     queue.add(new _Point(p.x-1,p.y,p.z+1,p.x,p.y,p.prevNode,p.special + (nextNode?1:0)));
-                }
-                if(validPath(grid,p,new int[] {1,0},'>')) {
+                if(validPath(grid,p,new int[] {1,0},'>'))
                     queue.add(new _Point(p.x+1,p.y,p.z+1,p.x,p.y,p.prevNode,p.special + (nextNode?1:0)));
-                }
-                if(validPath(grid,p,new int[] {0,-1},'^')) {
+                if(validPath(grid,p,new int[] {0,-1},'^'))
                     queue.add(new _Point(p.x,p.y-1,p.z+1,p.x,p.y,p.prevNode,p.special + (nextNode?1:0)));
-                }
-                if(validPath(grid,p,new int[] {0,1},'v')) {
+                if(validPath(grid,p,new int[] {0,1},'v'))
                     queue.add(new _Point(p.x,p.y+1,p.z+1,p.x,p.y,p.prevNode,p.special + (nextNode?1:0)));
-                }
             }
 
             // Calc the longest path from start to endPoint
