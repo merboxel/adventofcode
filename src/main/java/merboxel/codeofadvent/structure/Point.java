@@ -1,5 +1,7 @@
 package merboxel.codeofadvent.structure;
 
+import java.util.Objects;
+
 public class Point {
     public long x;
     public long y;
@@ -27,6 +29,11 @@ public class Point {
             return this.x == that.x && this.y == that.y && this.z == that.z;
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x,y,z);
     }
 
     @Override

@@ -118,12 +118,12 @@ public class D23 {
 
             char[][] grid = lines.stream().map(String::toCharArray).toArray(char[][]::new);
             Queue<_Point> queue = new PriorityQueue<>();
-            Node[][] nodes = new Node[grid.length][grid[0].length];
+            Map<Point,Node> nodes = new HashMap<>();
 
             Node startNode = new Node();
             Node endNode = new Node();
-            nodes[1][0] = startNode;
-            nodes[grid.length-1][grid[0].length-2] = endNode;
+            nodes.put(new Point(0,1),startNode);
+            nodes.put(new Point(grid.length-1,grid[0].length-2),endNode);
 
             _Point start = new _Point(1,0,0,0,0,startNode,1);
             queue.add(start);
@@ -142,10 +142,10 @@ public class D23 {
 
                 //Create node and edge
                 if(p.special == 2) {
-                    Node cur = nodes[(int)p.y][(int)p.x];
+                    Node cur = nodes.get(new Point((int)p.y,(int)p.x));
                     if(null == cur) {
                         cur = new Node();
-                        nodes[(int)p.y][(int)p.x] = cur;
+                        nodes.put(new Point((int)p.y,(int)p.x),cur);
                     }
                     cur.edges.add(new Edge(p.prevNode,(int)p.z));
                     p.prevNode.edges.add(new Edge(cur,(int)p.z));
