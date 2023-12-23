@@ -1,9 +1,9 @@
 package merboxel.codeofadvent.structure;
 
-public class Point{
-    long x;
-    long y;
-    long z;
+public class Point {
+    public long x;
+    public long y;
+    public long z;
 
     public Point() {
         this.x = 0L;
