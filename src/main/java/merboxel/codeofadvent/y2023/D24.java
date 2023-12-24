@@ -142,7 +142,8 @@ public class D24 {
 
         static class Vector {
             long x, y, z;
-            long vx,vy,vz;
+            long vx, vy, vz;
+
             public Vector(long[] numbers) {
                 this.x = numbers[0];
                 this.y = numbers[1];
@@ -151,5 +152,6 @@ public class D24 {
                 this.vy = numbers[4];
                 this.vz = numbers[5];
             }
+        }
     }
 }
