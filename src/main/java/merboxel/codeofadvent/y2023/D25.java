@@ -14,7 +14,6 @@ public class D25 {
 
     public static void main(String[] args) throws IOException {
         P1.run();
-        P2.run();
     }
 
     static Scanner readFile() throws IOException {
