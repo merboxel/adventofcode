@@ -4,6 +4,13 @@ import java.util.stream.IntStream;
 
 public class ArrayUtils {
 
+    public static int[] removeElement(int[] arr, int atIndex) {
+        return IntStream.range(0, arr.length)
+                .filter(i -> i != atIndex)
+                .map(i -> arr[i])
+                .toArray();
+    }
+
     public static <T> T[] removeElement(T[] arr, int atIndex) {
         return IntStream.range(0, arr.length)
                 .filter(i -> i != atIndex)
