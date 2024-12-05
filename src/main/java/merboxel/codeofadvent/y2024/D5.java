@@ -126,7 +126,7 @@ public class D5 {
                     List<Integer> seq = Arrays.stream(line.split(",")).map(Integer::parseInt).toList();
 
                     if (!validSeq(map, seq)) {
-
+                        result += invalidSeq(map,seq);
                     }
                 }
             }
@@ -135,14 +135,34 @@ public class D5 {
             System.out.println("--------------------------------------");
         }
 
-        public static void invalidSeq(HashMap<Integer, HashSet<Integer>> map, List<Integer> seq) {
+        public static int invalidSeq(HashMap<Integer, HashSet<Integer>> map, List<Integer> seq) {
+
+            List<Integer> result = new ArrayList<>();
 
             HashSet<Integer> _seq = new HashSet<>(seq);
             HashSet<Integer> _visit = new HashSet<>();
-//
-//            for(int i = 0; i < seq.size(); i ++) {
-//
-//            }
+            HashMap<Integer, Set<Integer>> _map = new HashMap<>();
+
+            for(int i : seq) {
+                Set<Integer> tmp = map.getOrDefault(i,new HashSet<>()).stream().filter(j -> _seq.contains(j)).collect(Collectors.toSet());
+                _map.put(i,tmp);
+
+            }
+
+            for(int i = 0; i < seq.size(); i++) {
+                for(int j : seq)  {
+                    if(_visit.contains(j))
+                        continue;
+
+                    if(_map.get(j).isEmpty()) {
+                        _map.forEach((key, value) -> value.remove(j));
+                        _visit.add(j);
+                        result.add(j);
+                        break;
+                    }
+                }
+            }
+            return result.get(result.size()/2);
         }
 
         public static boolean validSeq(HashMap<Integer, HashSet<Integer>> map, List<Integer> seq) {
