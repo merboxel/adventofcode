@@ -22,8 +22,6 @@ public class D5 {
     }
 
     static class P1 {
-        static char[] xmas = "XMAS".toCharArray();
-
         public static void main(String[] args) throws IOException {
             run();
         }
@@ -34,7 +32,7 @@ public class D5 {
 
             int result = 0;
 
-            HashMap<Integer, HashSet<Integer>> map = new HashMap<>();
+            Map<Integer, Set<Integer>> map = new HashMap<>();
 
             String[] lines = ScannerUtil.toList(sc).toArray(new String[0]);
 
@@ -43,14 +41,11 @@ public class D5 {
             for (String line : lines) {
                 if (line.isEmpty()) {
                     p1.set(false);
-                    continue;
-                }
-
-                if (p1.get()) {
-                    String[] tmp = line.split("\\|");
-                    Integer f = Integer.parseInt(tmp[0]);
-                    Integer s = Integer.parseInt(tmp[1]);
-                    HashSet<Integer> set = map.getOrDefault(s, new HashSet<>());
+                } else if (p1.get()) {
+                    int[] tmp = Arrays.stream(line.split("\\|")).mapToInt(Integer::parseInt).toArray();
+                    int f = tmp[0];
+                    int s = tmp[1];
+                    Set<Integer> set = map.getOrDefault(s, new HashSet<>());
                     set.add(f);
                     map.put(s, set);
                 } else {
@@ -66,27 +61,18 @@ public class D5 {
             System.out.println("--------------------------------------");
         }
 
-        public static boolean validSeq(HashMap<Integer, HashSet<Integer>> map, List<Integer> seq) {
+        public static boolean validSeq(Map<Integer, Set<Integer>> map, List<Integer> seq) {
 
-            HashSet<Integer> _seq = new HashSet<>(seq);
-            HashSet<Integer> _visit = new HashSet<>();
-
+            Set<Integer> _visit = new HashSet<>();
 
             for (int elem : seq) {
+                Set<Integer> tmp = map.getOrDefault(elem, new HashSet<>());
+                Set<Integer> copy = new HashSet<>(tmp);
 
-                HashSet<Integer> tmp = map.get(elem);
-
-                if(tmp == null)
-                    tmp = new HashSet<>();
-                HashSet<Integer> copy = new HashSet<>(tmp);
-
-
-                Set<Integer> _copy = copy.stream().filter(i -> !_visit.contains(i) && _seq.contains(i)).collect(Collectors.toSet());
-                if(!_copy.isEmpty())
+                if(copy.stream().anyMatch(i -> !_visit.contains(i) && seq.contains(i)))
                     return false;
                 _visit.add(elem);
             }
-
             return true;
         }
     }
@@ -103,7 +89,7 @@ public class D5 {
 
             int result = 0;
 
-            HashMap<Integer, HashSet<Integer>> map = new HashMap<>();
+            Map<Integer, Set<Integer>> map = new HashMap<>();
 
             String[] lines = ScannerUtil.toList(sc).toArray(new String[0]);
 
@@ -112,14 +98,11 @@ public class D5 {
             for (String line : lines) {
                 if (line.isEmpty()) {
                     p1.set(false);
-                    continue;
-                }
-
-                if (p1.get()) {
-                    String[] tmp = line.split("\\|");
-                    Integer f = Integer.parseInt(tmp[0]);
-                    Integer s = Integer.parseInt(tmp[1]);
-                    HashSet<Integer> set = map.getOrDefault(s, new HashSet<>());
+                } else if (p1.get()) {
+                    int[] tmp = Arrays.stream(line.split("\\|")).mapToInt(Integer::parseInt).toArray();
+                    int f = tmp[0];
+                    int s = tmp[1];
+                    Set<Integer> set = map.getOrDefault(s, new HashSet<>());
                     set.add(f);
                     map.put(s, set);
                 } else {
@@ -135,18 +118,16 @@ public class D5 {
             System.out.println("--------------------------------------");
         }
 
-        public static int invalidSeq(HashMap<Integer, HashSet<Integer>> map, List<Integer> seq) {
+        public static int invalidSeq(Map<Integer, Set<Integer>> map, List<Integer> seq) {
 
             List<Integer> result = new ArrayList<>();
 
-            HashSet<Integer> _seq = new HashSet<>(seq);
-            HashSet<Integer> _visit = new HashSet<>();
-            HashMap<Integer, Set<Integer>> _map = new HashMap<>();
+            Set<Integer> _visit = new HashSet<>();
+            Map<Integer, Set<Integer>> _map = new HashMap<>();
 
             for(int i : seq) {
-                Set<Integer> tmp = map.getOrDefault(i,new HashSet<>()).stream().filter(j -> _seq.contains(j)).collect(Collectors.toSet());
+                Set<Integer> tmp = map.getOrDefault(i,new HashSet<>()).stream().filter(seq::contains).collect(Collectors.toSet());
                 _map.put(i,tmp);
-
             }
 
             for(int i = 0; i < seq.size(); i++) {
@@ -165,23 +146,15 @@ public class D5 {
             return result.get(result.size()/2);
         }
 
-        public static boolean validSeq(HashMap<Integer, HashSet<Integer>> map, List<Integer> seq) {
+        public static boolean validSeq(Map<Integer, Set<Integer>> map, List<Integer> seq) {
 
-            HashSet<Integer> _seq = new HashSet<>(seq);
-            HashSet<Integer> _visit = new HashSet<>();
-
+            Set<Integer> _visit = new HashSet<>();
 
             for (int elem : seq) {
+                Set<Integer> tmp = map.getOrDefault(elem,new HashSet<>());
+                Set<Integer> copy = new HashSet<>(tmp);
 
-                HashSet<Integer> tmp = map.get(elem);
-
-                if (tmp == null)
-                    tmp = new HashSet<>();
-                HashSet<Integer> copy = new HashSet<>(tmp);
-
-
-                Set<Integer> _copy = copy.stream().filter(i -> !_visit.contains(i) && _seq.contains(i)).collect(Collectors.toSet());
-                if (!_copy.isEmpty())
+                if (copy.stream().anyMatch(i -> !_visit.contains(i) && seq.contains(i)))
                     return false;
                 _visit.add(elem);
             }
