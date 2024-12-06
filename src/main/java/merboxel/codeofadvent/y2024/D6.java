@@ -1,7 +1,6 @@
 package merboxel.codeofadvent.y2024;
 
 
-import merboxel.codeofadvent.util.PatternMatching;
 import merboxel.codeofadvent.util.ScannerUtil;
 
 import java.io.IOException;
@@ -88,34 +87,28 @@ public class D6 {
             System.out.println("--------------- Part 2 ---------------");
             Scanner sc = readFile();
 
-            grid = ScannerUtil.toList(sc).stream().map(String::toCharArray).toList().toArray(new char[0][]);
+            char[][] _grid = ScannerUtil.toList(sc).stream().map(String::toCharArray).toList().toArray(new char[0][]);
 
             int result = 0;
 
-            for(int i = 0; i < grid.length; i++) {
-                for(int j = 0; j < grid[i].length; j++) {
-                    if (grid[i][j] == '^') {
+            for(int i = 0; i < _grid.length; i++) {
+                for(int j = 0; j < _grid[i].length; j++) {
+                    if (_grid[i][j] == '^') {
                         x = i;
                         y = j;
-                        grid[i][j] = 'X';
+                        _grid[i][j] = 'X';
                     }
                 }
             }
 
-            while(true) {
-                try {
-                    if(grid[x + dir[face][0]][y + dir[face][1]] == '#') {
-                        face = (face + 1) % 4;
-                    } else {
-                        x += dir[face][0];
-                        y += dir[face][1];
-                        grid[x][y] = 'X';
+            for(int i = 0; i < _grid.length; i++) {
+                for(int j = 0; j < _grid[i].length; j++) {
+                    if (_grid[i][j] == '^' || _grid[i][j] == '#') {
+                        continue;
                     }
-
-                    if(foundAlternativeLoop())
-                        result ++;
-                } catch (Exception ignore) {
-                    break;
+                    copy(_grid);
+                    grid[i][j] = '#';
+                    result += findLoop();
                 }
             }
 
@@ -123,27 +116,36 @@ public class D6 {
             System.out.println("--------------------------------------");
         }
 
-        public static boolean foundAlternativeLoop() {
-            int _face = (face + 1) % 4, _x = x, _y = y;
+        public static void copy(char[][] _grid) {
+            grid = new char[_grid.length][_grid[0].length];
+            for(int i = 0; i < _grid.length; i++) {
+                System.arraycopy(_grid[i], 0, grid[i], 0, _grid[i].length);
+            }
+        }
 
-            try {
-                while (true) {
-                    if (grid[_x + dir[_face][0]][_y + dir[_face][1]] == 'X') {
-                        if(grid[_x][_y] == '#') {
-                            System.out.println("x,y := [" + (x + dir[face][0]) + "," + (y + dir[face][1] + "]"));
-                            return true;
-                        } else {
-                            _x += dir[_face][0];
-                            _y += dir[_face][1];
-                        }
+        public static int findLoop() {
+
+            Set<List<Integer>> visited = new HashSet<>();
+            int _x = x, _y = y, _face = face;
+
+            while(true) {
+                try {
+                    if(visited.contains(List.of(_x,_y,_face))){
+                        return 1;
+                    }
+
+                    if(grid[_x + dir[_face][0]][_y + dir[_face][1]] == '#') {
+                        _face = (_face + 1) % 4;
                     } else {
+                        visited.add(List.of(_x,_y,_face));
                         _x += dir[_face][0];
                         _y += dir[_face][1];
+                        grid[_x][_y] = 'X';
                     }
+                } catch (Exception ignore) {
+                    return 0;
                 }
-            } catch (Exception ignored) {}
-
-            return false;
+            }
         }
     }
 }
