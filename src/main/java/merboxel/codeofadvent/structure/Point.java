@@ -31,6 +31,28 @@ public class Point {
         return false;
     }
 
+    public Point distanceVector(Point _that) {
+        return new Point(
+                this.x - _that.x,
+                this.y - _that.y,
+                this.z - _that.z
+        );
+    }
+
+    public Point addVector(Point _that) {
+        return new Point(
+                this.x + _that.x,
+                this.y + _that.y,
+                this.z + _that.z
+        );
+    }
+
+    public long distance(Point _that) {
+        return Math.abs(this.x - _that.x) +
+                Math.abs(this.y - _that.y) +
+                Math.abs(this.z - _that.z);
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(x,y,z);
