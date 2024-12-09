@@ -81,8 +81,45 @@ public class D9 {
             System.out.println("--------------- Part 2 ---------------");
             Scanner sc = readFile();
 
-            List<String> lines = ScannerUtil.toList(sc);
+            int[] diskMap = sc.nextLine().chars().map(c -> c - '0').toArray();
+            int[] status__ = diskMap.clone();
 
+            long result = 0L;
+
+            for(int end = diskMap.length-1; end > 0; end -= 2) {
+                long fileId = 0L;
+                for(int i = 0; i < end; i++) {
+                    if(i % 2 == 1) {
+                        if(diskMap[end] <= status__[i]) {
+                            fileId += diskMap[i] - status__[i];
+                            status__[i] -= diskMap[end];
+                            for(int j = 0; j < diskMap[end]; j++) {
+                                System.out.println(fileId * (end/2));
+                                result += fileId * (end/2);
+                                fileId ++;
+                            }
+                            diskMap[end] = 0;
+                            break;
+                        }
+                    }
+                    fileId += diskMap[i];
+                }
+            }
+
+            long index = 0;
+
+            for(int i = 0; i < diskMap.length; i++) {
+                for(int j = 0; j < diskMap[i]; j++) {
+                    if(i % 2 == 0) {
+                        System.out.println(index * (i / 2));
+                        result += index * (i / 2);
+                    }
+                    index ++;
+                }
+                if(diskMap[i] == 0)//block has been moved but we still need to add the free indexes
+                    index += status__[i];
+            }
+            System.out.println(result);
             System.out.println("--------------------------------------");
         }
     }
