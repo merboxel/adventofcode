@@ -34,8 +34,6 @@ public class D9_2 {
                 freeSpace[i] = new PriorityQueue<>();
             }
 
-
-
             int[] diskMap = sc.nextLine().chars().map(c -> c - '0').toArray();
             int[] fileIndexes = new int[diskMap.length];
             int index = 0;
@@ -72,27 +70,25 @@ public class D9_2 {
             }while((i -= 2) >= 0);
 
             long result = 0L;
-
-
             int _fileIndex = 0;
-            for(Triple triple : solution) {
+            while(!solution.isEmpty()) {
+                Triple triple = solution.poll();
+
+                //Disregarding trailing '.'
                 for(;_fileIndex < triple.index + triple.length; _fileIndex++) {
                     if(_fileIndex < triple.index)
                         System.out.print('.');
                     else
                         System.out.print(triple.value);
                 }
-            }
 
-            System.out.println();
-
-            while(!solution.isEmpty()) {
-                Triple triple = solution.poll();
                 for(int fileIndex = triple.index; fileIndex < triple.index + triple.length; fileIndex++) {
                     result += ((long) fileIndex * triple.value);
                 }
             }
 
+            System.out.println();
+            System.out.println("--------------------------------------");
             System.out.println(result);
             System.out.println("--------------------------------------");
         }
