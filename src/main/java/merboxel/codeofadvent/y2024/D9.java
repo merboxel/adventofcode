@@ -94,7 +94,6 @@ public class D9 {
                             fileId += diskMap[i] - status__[i];
                             status__[i] -= diskMap[end];
                             for(int j = 0; j < diskMap[end]; j++) {
-                                System.out.println(fileId * (end/2));
                                 result += fileId * (end/2);
                                 fileId ++;
                             }
@@ -111,7 +110,6 @@ public class D9 {
             for(int i = 0; i < diskMap.length; i++) {
                 for(int j = 0; j < diskMap[i]; j++) {
                     if(i % 2 == 0) {
-                        System.out.println(index * (i / 2));
                         result += index * (i / 2);
                     }
                     index ++;
