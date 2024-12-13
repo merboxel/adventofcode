@@ -30,7 +30,7 @@ public class D13 {
             System.out.println("--------------- Part 1 ---------------");
             Scanner sc = readFile();
 
-            int result = 0;
+            long result = 0;
 
             while(sc.hasNextLine()) {
                 String tmp = sc.nextLine();
@@ -41,12 +41,12 @@ public class D13 {
                 String[] _b = sc.nextLine().split(" ");
                 String[] _ans = sc.nextLine().split(" ");
 
-                int[] a = { PatternMatching.getIntegersAsArray(_a[2])[0], PatternMatching.getIntegersAsArray(_a[3])[0] };
-                int[] b = { PatternMatching.getIntegersAsArray(_b[2])[0], PatternMatching.getIntegersAsArray(_b[3])[0] };
-                int[] ans = { PatternMatching.getIntegersAsArray(_ans[1])[0], PatternMatching.getIntegersAsArray(_ans[2])[0] };
+                long[] a = { PatternMatching.getIntegersAsArray(_a[2])[0], PatternMatching.getIntegersAsArray(_a[3])[0] };
+                long[] b = { PatternMatching.getIntegersAsArray(_b[2])[0], PatternMatching.getIntegersAsArray(_b[3])[0] };
+                long[] ans = { PatternMatching.getIntegersAsArray(_ans[1])[0], PatternMatching.getIntegersAsArray(_ans[2])[0] };
 
-                int[][] resA = new int[100][2];
-                int[][] resB = new int[100][2];
+                long[][] resA = new long[100][2];
+                long[][] resB = new long[100][2];
 
                 for(int i = 0; i < resA.length; i++) {
                     resA[i][0] = i * a[0];
@@ -59,7 +59,6 @@ public class D13 {
                 }
 
                 int resAns = 1000;
-                System.out.println("-------------------------");
 
                 for(int i = 0; i < resA.length; i++) {
                     for(int j = 0; j < resB.length; j++) {
@@ -72,9 +71,7 @@ public class D13 {
                 }
                 if(resAns != 1000) {
                     result += resAns;
-                    System.out.println("result := "+result);
                 }
-                System.out.println("-------------------------");
             }
 
             System.out.println(result);
@@ -91,7 +88,7 @@ public class D13 {
             System.out.println("--------------- Part 2 ---------------");
             Scanner sc = readFile();
 
-            int result = 0;
+            long result = 0L;
 
             while(sc.hasNextLine()) {
                 String tmp = sc.nextLine();
@@ -106,40 +103,26 @@ public class D13 {
                 long[] b = { PatternMatching.getIntegersAsArray(_b[2])[0], PatternMatching.getIntegersAsArray(_b[3])[0] };
                 long[] ans = { PatternMatching.getIntegersAsArray(_ans[1])[0] + 10000000000000L, PatternMatching.getIntegersAsArray(_ans[2])[0] + 10000000000000L };
 
-                long[][] resA = new long[100][2];
-                long[][] resB = new long[100][2];
-
-                for(int i = 0; i < resA.length; i++) {
-                    resA[i][0] = i * a[0];
-                    resA[i][1] = i * a[1];
-                }
-
-                for(int i = 0; i < resB.length; i++) {
-                    resB[i][0] = i * b[0];
-                    resB[i][1] = i * b[1];
-                }
-
-                int resAns = 1000;
                 System.out.println("-------------------------");
 
-                for(int i = 0; i < resA.length; i++) {
-                    for(int j = 0; j < resB.length; j++) {
-                        if(ans[0] == resA[i][0] + resB[j][0] && ans[1] == resA[i][1] + resB[j][1]) {
-                            resAns = Math.min(resAns, 3*i + j);
+                long det = (a[0]*b[1] - b[0]*a[1]);
 
-                            System.out.println(resAns);
-                        }
-                    }
+                long tokenA = (b[1]*ans[0] - b[0]*ans[1]) / det;
+                System.out.println("tokenA := "+tokenA);
+
+                long tokenB = (a[0]*ans[1] - a[1]*ans[0]) / det;
+                System.out.println("tokenB := "+tokenB);
+
+                if(tokenA >= 0 && tokenB >= 0 && tokenA * a[0] + tokenB * b[0] == ans[0] && tokenA * a[1] + tokenB * b[1] == ans[1]) {
+                    result += (3*tokenA + tokenB);
                 }
-                if(resAns != 1000) {
-                    result += resAns;
-                    System.out.println("result := "+result);
-                }
+
                 System.out.println("-------------------------");
             }
 
             System.out.println(result);
             System.out.println("--------------------------------------");
+
         }
     }
 }
