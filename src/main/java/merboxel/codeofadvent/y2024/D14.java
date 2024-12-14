@@ -59,11 +59,6 @@ public class D14 {
             Point loc;
             Point vel;
 
-            public Robot(Point loc, Point vel) {
-                this.loc = loc;
-                this.vel = vel;
-            }
-
             public Robot(String line) {
                 String[] tmp = line.split(" ");
                 long[] p = PatternMatching.getLongsWithNegativesAsArray(tmp[0]);
@@ -135,11 +130,6 @@ public class D14 {
             Point loc;
             Point vel;
 
-            public Robot(Point loc, Point vel) {
-                this.loc = loc;
-                this.vel = vel;
-            }
-
             public Robot(String line) {
                 String[] tmp = line.split(" ");
                 long[] p = PatternMatching.getLongsWithNegativesAsArray(tmp[0]);
@@ -150,18 +140,6 @@ public class D14 {
 
             public void move() {
                 this.loc = new Point(Math.floorMod(loc.x + vel.x, width), Math.floorMod(loc.y + vel.y, height));
-            }
-
-            public int findQuadrant() {
-                if(loc.x < width/2 && loc.y < height/2)
-                    return 1;
-                if(loc.x > width/2 && loc.y < height/2)
-                    return 2;
-                if(loc.x < width/2 && loc.y > height/2)
-                    return 3;
-                if(loc.x > width/2 && loc.y > height/2)
-                    return 4;
-                return 0;
             }
         }
     }
