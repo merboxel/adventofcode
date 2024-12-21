@@ -25,9 +25,6 @@ public class D21 {
 
     static class P1 {
 
-        String[][] dSequence = new String[5][5];
-        String[][] nSequence = new String[11][11];
-
         public static void main(String[] args) throws IOException {
             run();
         }
@@ -71,85 +68,21 @@ public class D21 {
                     currD = next;
                 }
                 String s3 = sb.toString();
+                sb = new StringBuilder();
 
-
-                System.out.println(code);
-                System.out.println(s1);
-                System.out.println(s2);
-                System.out.println(s3);
-
-                System.out.println(s3.length());
-                System.out.println(Long.parseLong(code.split("A")[0]));
+                currD = dKeyPad.A;
+                for (char c : s3.toCharArray()) {
+                    dKeyPad next = getDKeyPad(c);
+                    sb.append(currD.sequence(next));
+                    sb.append("A");
+                    currD = next;
+                }
 
                 result += s3.length() * Long.parseLong(code.split("A")[0]);
             }
 
             System.out.println(result); // wrong 213458
             System.out.println("--------------------------------------");
-
-//
-//
-//
-        }
-
-        static nKeyPad getNKeyPad(char c) {
-            switch (c) {
-                case '0' -> {
-                    return nKeyPad.ZERO;
-                }
-                case '1' -> {
-                    return nKeyPad.ONE;
-                }
-                case '2' -> {
-                    return nKeyPad.TWO;
-                }
-                case '3' -> {
-                    return nKeyPad.THREE;
-                }
-                case '4' -> {
-                    return nKeyPad.FOUR;
-                }
-                case '5' -> {
-                    return nKeyPad.FIVE;
-                }
-                case '6' -> {
-                    return nKeyPad.SIX;
-                }
-                case '7' -> {
-                    return nKeyPad.SEVEN;
-                }
-                case '8' -> {
-                    return nKeyPad.EIGHT;
-                }
-                case '9' -> {
-                    return nKeyPad.NINE;
-                }
-                case 'A' -> {
-                    return nKeyPad.A;
-                }
-                default -> throw new IllegalStateException("Unexpected value: " + c);
-            }
-        }
-
-        static dKeyPad getDKeyPad(char c) {
-            switch (c) {
-                case '^' -> {
-                    return dKeyPad.UP;
-                }
-                case 'v' -> {
-                    return dKeyPad.DOWN;
-                }
-                case '<' -> {
-                    return dKeyPad.LEFT;
-                }
-                case '>' -> {
-                    return dKeyPad.RIGHT;
-                }
-                case 'A' -> {
-                    return dKeyPad.A;
-                }
-                default -> throw new IllegalStateException("Unexpected value: " + c);
-            }
         }
     }
 
@@ -163,9 +96,67 @@ public class D21 {
             System.out.println("--------------- Part 2 ---------------");
             Scanner sc = readFile();
 
-            char[][] grid = Arrays.stream(ScannerUtil.toArray(sc)).map(String::toCharArray).toArray(char[][]::new);
+            long result = 0L;
 
-            System.out.println();
+            List<String> codes = ScannerUtil.toList(sc);
+
+            long[][][] dp = new long[25][5][5];
+
+            dKeyPad[] dKeyPads = {
+                    dKeyPad.A,
+                    dKeyPad.UP,
+                    dKeyPad.DOWN,
+                    dKeyPad.LEFT,
+                    dKeyPad.RIGHT,
+            };
+
+            for (int j = 0; j < dKeyPads.length; j++) {
+                for (int k = 0; k < dKeyPads.length; k++) {
+                    dp[0][j][k] = dKeyPads[j].sequence(dKeyPads[k]).length() + 1;
+                }
+            }
+
+            for (int i = 1; i < dp.length; i++) {
+                for (int j = 0; j < dKeyPads.length; j++) {
+                    for (int k = 0; k < dKeyPads.length; k++) {
+                        String seq = dKeyPads[j].sequence(dKeyPads[k]) + 'A';
+
+                        long r = 0L;
+                        int curr = getDKeyPadAsInt('A');;
+
+                        for (char c : seq.toCharArray()) {
+                            int next = getDKeyPadAsInt(c);
+                            r += dp[i - 1][curr][next];
+                            curr = next;
+                        }
+                        dp[i][j][k] = r;
+                    }
+                }
+            }
+
+            for (String code : codes) {
+
+                nKeyPad currN = nKeyPad.A;
+                StringBuilder sb = new StringBuilder();
+
+                for (char c : code.toCharArray()) {
+                    nKeyPad next = getNKeyPad(c);
+                    sb.append(currN.sequence(next));
+                    sb.append("A");
+                    currN = next;
+                }
+                String s = sb.toString();
+
+                long r = 0L;
+                int curr = getDKeyPadAsInt('A');
+                for (char c : s.toCharArray()) {
+                    int next = getDKeyPadAsInt(c);
+                    r += dp[24][curr][next];
+                    curr = next;
+                }
+                result += r * Long.parseLong(code.split("A")[0]);
+            }
+            System.out.println(result);
             System.out.println("--------------------------------------");
         }
     }
@@ -190,6 +181,87 @@ public class D21 {
                 };
     }
 
+    static nKeyPad getNKeyPad(char c) {
+        switch (c) {
+            case '0' -> {
+                return nKeyPad.ZERO;
+            }
+            case '1' -> {
+                return nKeyPad.ONE;
+            }
+            case '2' -> {
+                return nKeyPad.TWO;
+            }
+            case '3' -> {
+                return nKeyPad.THREE;
+            }
+            case '4' -> {
+                return nKeyPad.FOUR;
+            }
+            case '5' -> {
+                return nKeyPad.FIVE;
+            }
+            case '6' -> {
+                return nKeyPad.SIX;
+            }
+            case '7' -> {
+                return nKeyPad.SEVEN;
+            }
+            case '8' -> {
+                return nKeyPad.EIGHT;
+            }
+            case '9' -> {
+                return nKeyPad.NINE;
+            }
+            case 'A' -> {
+                return nKeyPad.A;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + c);
+        }
+    }
+
+    static int getDKeyPadAsInt(char c) {
+        switch (c) {
+            case 'A' -> {
+                return 0;
+            }
+            case '^' -> {
+                return 1;
+            }
+            case 'v' -> {
+                return 2;
+            }
+            case '<' -> {
+                return 3;
+            }
+            case '>' -> {
+                return 4;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + c);
+        }
+    }
+
+    static dKeyPad getDKeyPad(char c) {
+        switch (c) {
+            case '^' -> {
+                return dKeyPad.UP;
+            }
+            case 'v' -> {
+                return dKeyPad.DOWN;
+            }
+            case '<' -> {
+                return dKeyPad.LEFT;
+            }
+            case '>' -> {
+                return dKeyPad.RIGHT;
+            }
+            case 'A' -> {
+                return dKeyPad.A;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + c);
+        }
+    }
+
     enum dKeyPad {
         UP(0, 1),
         DOWN(1, 1),
@@ -209,17 +281,22 @@ public class D21 {
 
             StringBuilder sb = new StringBuilder();
 
-            if(dy < 0) {
-                 if(dy == -2) {
-                     sb.append(moveDx(dx));
-                     sb.append(moveDy(dy));
-                 } else {
-                     sb.append(moveDy(dy));
-                     sb.append(moveDx(dx));
-                 }
+            if (dy < 0) {
+                if (that.p.y == 0) {
+                    sb.append(moveDx(dx));
+                    sb.append(moveDy(dy));
+                } else {
+                    sb.append(moveDy(dy));
+                    sb.append(moveDx(dx));
+                }
             } else {
-                sb.append(moveDy(dy));
-                sb.append(moveDx(dx));
+                if(this.p.y == 0) {
+                    sb.append(moveDy(dy));
+                    sb.append(moveDx(dx));
+                } else {
+                    sb.append(moveDx(dx));
+                    sb.append(moveDy(dy));
+                }
             }
             return sb.toString();
         }
@@ -250,8 +327,8 @@ public class D21 {
 
             StringBuilder sb = new StringBuilder();
 
-            if(dy < 0) {
-                if(this.p.x == 3 && that.p.y == 0) {
+            if (dy < 0) {
+                if (this.p.x == 3 && that.p.y == 0) {
                     sb.append(moveDx(dx));
                     sb.append(moveDy(dy));
                 } else {
@@ -259,7 +336,7 @@ public class D21 {
                     sb.append(moveDx(dx));
                 }
             } else {
-                if(that.p.x == 3 && this.p.y == 0) {
+                if (that.p.x == 3 && this.p.y == 0) {
                     sb.append(moveDy(dy));
                     sb.append(moveDx(dx));
                 } else {
