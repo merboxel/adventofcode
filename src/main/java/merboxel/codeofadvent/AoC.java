@@ -10,6 +10,11 @@ public abstract class AoC {
     protected int year;
     protected int day;
 
+    public AoC(int year, int day) {
+        this.year = year;
+        this.day = day;
+    }
+
     Scanner readFile() throws IOException {
         return readFileAsScanner(year, day);
     }

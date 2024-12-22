@@ -8,13 +8,12 @@ import java.util.*;
 
 public class D22_2 extends AoC {
 
-    D22_2(int year, int day) {
-        this.year = year;
-        this.day = day;
+    D22_2() {
+        super(2024,22);
     }
 
     public static void main(String[] args) throws IOException {
-        AoC d = new D22_2(2024,22);
+        AoC d = new D22_2();
         d.run();
     }
 

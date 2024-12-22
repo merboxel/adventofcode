@@ -15,13 +15,12 @@ import static merboxel.codeofadvent.FileReader.readFileAsScanner;
 
 public class D22 extends AoC {
 
-    D22(int year, int day) {
-        this.year = year;
-        this.day = day;
+    D22() {
+        super(2024, 22);
     }
 
     public static void main(String[] args) throws IOException {
-        AoC d = new D22(2024,22);
+        AoC d = new D22();
         d.run();
     }
 
