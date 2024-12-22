@@ -12,15 +12,17 @@ import java.util.Scanner;
 public class D21P1 extends AoC {
 
     public D21P1(Scanner sc) {
-        super(2024, 21, sc);
+        super(2024, 21, 1, sc);
     }
 
     public D21P1() throws IOException {
-        super(2024, 21);
+        super(2024, 21, 1);
     }
 
     public static void main(String[] args) throws IOException {
-        new D21P1().run();
+        System.out.println("--------------- Part 1 ---------------");
+        System.out.println(new D21P1().run());
+        System.out.println("--------------------------------------");
     }
 
     static String moveDx(int dx) {
@@ -44,7 +46,6 @@ public class D21P1 extends AoC {
     }
 
     public String run() throws IOException {
-        System.out.println("--------------- Part 1 ---------------");
 
         long result = 0L;
 
@@ -93,9 +94,6 @@ public class D21P1 extends AoC {
 
             result += s3.length() * Long.parseLong(code.split("A")[0]);
         }
-
-        System.out.println(result);
-        System.out.println("--------------------------------------");
 
         return Long.toString(result);
     }

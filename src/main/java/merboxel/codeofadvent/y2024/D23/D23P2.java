@@ -8,11 +8,11 @@ import java.util.Scanner;
 public class D23P2 extends AoC {
 
     public D23P2(Scanner sc) {
-        super(2024, 23, sc);
+        super(2024, 23, 2, sc);
     }
 
     public D23P2() throws IOException {
-        super(2024, 23);
+        super(2024, 23, 2);
     }
 
     public static void main(String[] args) throws IOException {
@@ -20,10 +20,6 @@ public class D23P2 extends AoC {
     }
 
     public String run() {
-        System.out.println("--------------- Part 2 ---------------");
-
-
-        System.out.println("--------------------------------------");
         return "";
     }
 }

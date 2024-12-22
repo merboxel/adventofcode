@@ -8,17 +8,21 @@ import java.util.*;
 
 public class D22P2_2 extends AoC {
 
+    D22P2_2(Scanner sc) throws IOException {
+        super(2024, 22, 2, sc);
+    }
+
     D22P2_2() throws IOException {
-        super(2024, 22);
+        super(2024, 22, 2);
     }
 
     public static void main(String[] args) throws IOException {
-        new D22P2_2().run();
+        System.out.println("--------------- Part 2 ---------------");
+        System.out.println(new D22P2_2().run());
+        System.out.println("--------------------------------------");
     }
 
     public String run() {
-        System.out.println("--------------- Part 2 ---------------");
-
         List<Integer> initSecrets = new ArrayList<>();
 
         while (sc.hasNextLong()) {
@@ -61,8 +65,6 @@ public class D22P2_2 extends AoC {
 
         int result = sequences.values().stream().max(Integer::compare).get();
 
-        System.out.println(result);
-        System.out.println("--------------------------------------");
         return Integer.toString(result);
     }
 

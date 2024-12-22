@@ -11,19 +11,20 @@ import java.util.Scanner;
 public class D22P1 extends AoC {
 
     public D22P1(Scanner sc) {
-        super(2024, 22, sc);
+        super(2024, 22, 1, sc);
     }
 
     D22P1() throws IOException {
-        super(2024, 22);
+        super(2024, 22, 1);
     }
 
     public static void main(String[] args) throws IOException {
-        new D22P1().run();
+        System.out.println("--------------- Part 1 ---------------");
+        System.out.println(new D22P1().run());
+        System.out.println("--------------------------------------");
     }
 
     public String run() throws IOException {
-        System.out.println("--------------- Part 1 ---------------");
 
         List<Integer> initSecrets = new ArrayList<>();
         long result = 0L;
@@ -35,9 +36,6 @@ public class D22P1 extends AoC {
         for (Integer secret : initSecrets) {
             result += generateSecrets(secret).getLast();
         }
-
-        System.out.println(result);
-        System.out.println("--------------------------------------");
 
         return Long.toString(result);
     }
