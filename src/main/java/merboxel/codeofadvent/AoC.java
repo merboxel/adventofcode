@@ -1,6 +1,8 @@
 package merboxel.codeofadvent;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Scanner;
 
 import static merboxel.codeofadvent.FileReader.readFileAsScanner;
@@ -38,8 +40,12 @@ public abstract class AoC {
         return part;
     }
 
-    public String getDescription() {
-        return "problem ['y:" + getYear() + " d:"+ getDay() +" p:"+getPart()+"']";
+    public String runWithStats() throws IOException {
+        Instant start = Instant.now();
+        String result = run();
+        Duration duration = Duration.between(start, Instant.now());
+
+        return "problem ['y:" + getYear() + " d:" + getDay() + " p:" + getPart() + "']" + ", runtime ['" + duration.toMillis() + "ms'], result ['" + result + "']";
     }
 
     public abstract String run() throws IOException;

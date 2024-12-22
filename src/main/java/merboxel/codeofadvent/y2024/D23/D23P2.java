@@ -16,7 +16,9 @@ public class D23P2 extends AoC {
     }
 
     public static void main(String[] args) throws IOException {
+        System.out.println("--------------- Part 2 ---------------");
         new D23P2().run();
+        System.out.println("--------------------------------------");
     }
 
     public String run() {
