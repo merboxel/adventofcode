@@ -1,9 +1,8 @@
 package merboxel.codeofadvent.y2024;
 
 
-import merboxel.codeofadvent.structure.Point;
+import merboxel.codeofadvent.structure.Point3D;
 import merboxel.codeofadvent.util.PatternMatching;
-import merboxel.codeofadvent.util.ScannerUtil;
 
 import java.io.IOException;
 import java.util.*;
@@ -56,19 +55,19 @@ public class D14 {
         }
 
         private static class Robot {
-            Point loc;
-            Point vel;
+            Point3D loc;
+            Point3D vel;
 
             public Robot(String line) {
                 String[] tmp = line.split(" ");
                 long[] p = PatternMatching.getLongsWithNegativesAsArray(tmp[0]);
                 long[] v = PatternMatching.getLongsWithNegativesAsArray(tmp[1]);
-                this.loc = new Point(p[0], p[1]);
-                this.vel = new Point(v[0], v[1]);
+                this.loc = new Point3D(p[0], p[1]);
+                this.vel = new Point3D(v[0], v[1]);
             }
 
             public void move() {
-                this.loc = new Point(Math.floorMod(loc.x + vel.x, width), Math.floorMod(loc.y + vel.y, height));
+                this.loc = new Point3D(Math.floorMod(loc.x + vel.x, width), Math.floorMod(loc.y + vel.y, height));
             }
 
             public int findQuadrant() {
@@ -127,19 +126,19 @@ public class D14 {
         }
 
         private static class Robot {
-            Point loc;
-            Point vel;
+            Point3D loc;
+            Point3D vel;
 
             public Robot(String line) {
                 String[] tmp = line.split(" ");
                 long[] p = PatternMatching.getLongsWithNegativesAsArray(tmp[0]);
                 long[] v = PatternMatching.getLongsWithNegativesAsArray(tmp[1]);
-                this.loc = new Point(p[0], p[1]);
-                this.vel = new Point(v[0], v[1]);
+                this.loc = new Point3D(p[0], p[1]);
+                this.vel = new Point3D(v[0], v[1]);
             }
 
             public void move() {
-                this.loc = new Point(Math.floorMod(loc.x + vel.x, width), Math.floorMod(loc.y + vel.y, height));
+                this.loc = new Point3D(Math.floorMod(loc.x + vel.x, width), Math.floorMod(loc.y + vel.y, height));
             }
         }
     }

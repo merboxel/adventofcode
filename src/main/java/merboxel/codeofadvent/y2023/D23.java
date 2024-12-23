@@ -1,11 +1,8 @@
 package merboxel.codeofadvent.y2023;
 
-import merboxel.codeofadvent.structure.Cube;
-import merboxel.codeofadvent.structure.Point;
-import merboxel.codeofadvent.util.PatternMatching;
+import merboxel.codeofadvent.structure.Point3D;
 
 import java.io.IOException;
-import java.sql.Array;
 import java.util.*;
 
 import static merboxel.codeofadvent.FileReader.readFileAsScanner;
@@ -81,7 +78,7 @@ public class D23 {
             return false;
         }
 
-        static class _Point extends Point implements Comparable<_Point> {
+        static class _Point extends Point3D implements Comparable<_Point> {
 
             public long prevX;
             public long prevY;
@@ -118,12 +115,12 @@ public class D23 {
 
             char[][] grid = lines.stream().map(String::toCharArray).toArray(char[][]::new);
             Queue<_Point> queue = new PriorityQueue<>();
-            Map<Point,Node> nodes = new HashMap<>();
+            Map<Point3D,Node> nodes = new HashMap<>();
 
             Node startNode = new Node();
             Node endNode = new Node();
-            nodes.put(new Point(0,1),startNode);
-            nodes.put(new Point(grid.length-1,grid[0].length-2),endNode);
+            nodes.put(new Point3D(0,1),startNode);
+            nodes.put(new Point3D(grid.length-1,grid[0].length-2),endNode);
 
             _Point start = new _Point(1,0,0,0,0,startNode,1);
             queue.add(start);
@@ -142,10 +139,10 @@ public class D23 {
 
                 //Create node and edge
                 if(p.special == 2) {
-                    Node cur = nodes.get(new Point((int)p.y,(int)p.x));
+                    Node cur = nodes.get(new Point3D((int)p.y,(int)p.x));
                     if(null == cur) {
                         cur = new Node();
-                        nodes.put(new Point((int)p.y,(int)p.x),cur);
+                        nodes.put(new Point3D((int)p.y,(int)p.x),cur);
                     }
                     cur.edges.add(new Edge(p.prevNode,(int)p.z));
                     p.prevNode.edges.add(new Edge(cur,(int)p.z));
@@ -216,7 +213,7 @@ public class D23 {
             List<Edge> edges = new ArrayList<>();
         }
 
-        static class _Point extends Point implements Comparable<_Point>{
+        static class _Point extends Point3D implements Comparable<_Point>{
 
             public long prevX;
             public long prevY;

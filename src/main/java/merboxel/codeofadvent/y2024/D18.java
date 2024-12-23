@@ -1,9 +1,7 @@
 package merboxel.codeofadvent.y2024;
 
 
-import merboxel.codeofadvent.structure.Point;
-import merboxel.codeofadvent.util.PatternMatching;
-import merboxel.codeofadvent.util.ScannerUtil;
+import merboxel.codeofadvent.structure.Point3D;
 
 import java.io.IOException;
 import java.util.*;
@@ -66,7 +64,7 @@ public class D18 {
             System.out.println("--------------------------------------");
         }
 
-        public static class _Point extends Point implements Comparable<_Point> {
+        public static class _Point extends Point3D implements Comparable<_Point> {
 
             _Point(long x, long y) {
                 super(x, y);
@@ -143,7 +141,7 @@ public class D18 {
             System.out.println("--------------------------------------");
         }
 
-        public static class _Point extends Point implements Comparable<P1._Point> {
+        public static class _Point extends Point3D implements Comparable<P1._Point> {
 
             _Point(long x, long y) {
                 super(x, y);

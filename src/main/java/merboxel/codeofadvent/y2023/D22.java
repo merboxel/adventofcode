@@ -1,7 +1,7 @@
 package merboxel.codeofadvent.y2023;
 
 import merboxel.codeofadvent.structure.Cube;
-import merboxel.codeofadvent.structure.Point;
+import merboxel.codeofadvent.structure.Point3D;
 import merboxel.codeofadvent.util.PatternMatching;
 
 import java.io.IOException;
@@ -42,7 +42,7 @@ public class D22 {
 
             while(sc.hasNext()) {
                 int[] points = PatternMatching.getIntegersAsArray(sc.nextLine());
-                _Cube cube = new _Cube(number, new Point(points[0],points[1],points[2]),new Point(points[3],points[4],points[5]));
+                _Cube cube = new _Cube(number, new Point3D(points[0],points[1],points[2]),new Point3D(points[3],points[4],points[5]));
                 queue.add(cube);
                 allCubes.add(cube);
 
@@ -106,7 +106,7 @@ public class D22 {
             public Set<_Cube> bot = new HashSet<>();
             public boolean placed = false;
 
-            public _Cube(int nb, Point p1, Point p2) {
+            public _Cube(int nb, Point3D p1, Point3D p2) {
                 super(p1,p2);
                 this.number =nb;
             }
@@ -151,7 +151,7 @@ public class D22 {
 
             while (sc.hasNext()) {
                 int[] points = PatternMatching.getIntegersAsArray(sc.nextLine());
-                _Cube cube = new _Cube(number, new Point(points[0], points[1], points[2]), new Point(points[3], points[4], points[5]));
+                _Cube cube = new _Cube(number, new Point3D(points[0], points[1], points[2]), new Point3D(points[3], points[4], points[5]));
                 queue.add(cube);
                 allCubes.add(cube);
 
@@ -232,7 +232,7 @@ public class D22 {
             public boolean placed = false;
             public long bricksOnTop = -1;
 
-            public _Cube(int nb, Point p1, Point p2) {
+            public _Cube(int nb, Point3D p1, Point3D p2) {
                 super(p1, p2);
                 this.number = nb;
             }

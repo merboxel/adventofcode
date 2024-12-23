@@ -2,7 +2,7 @@ package merboxel.codeofadvent.y2024.D21;
 
 
 import merboxel.codeofadvent.AoC;
-import merboxel.codeofadvent.structure.Point;
+import merboxel.codeofadvent.structure.Point3D;
 import merboxel.codeofadvent.util.ScannerUtil;
 
 import java.io.IOException;
@@ -177,10 +177,10 @@ public class D21P2 extends AoC {
         RIGHT(1, 2),
         A(0, 2);
 
-        private final Point p;
+        private final Point3D p;
 
         dKeyPad(int x, int y) {
-            p = new Point(x, y);
+            p = new Point3D(x, y);
         }
 
         String sequence(dKeyPad that) {
@@ -223,10 +223,10 @@ public class D21P2 extends AoC {
         ZERO(3, 1),
         A(3, 2);
 
-        private final Point p;
+        private final Point3D p;
 
         nKeyPad(int x, int y) {
-            p = new Point(x, y);
+            p = new Point3D(x, y);
         }
 
         String sequence(nKeyPad that) {

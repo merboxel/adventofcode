@@ -1,8 +1,7 @@
 package merboxel.codeofadvent.y2024;
 
 
-import merboxel.codeofadvent.structure.Point;
-import merboxel.codeofadvent.util.PatternMatching;
+import merboxel.codeofadvent.structure.Point3D;
 import merboxel.codeofadvent.util.ScannerUtil;
 
 import java.io.IOException;
@@ -37,27 +36,27 @@ public class D8 {
             char[][] grid = ScannerUtil.toList(sc).stream().map(String::toCharArray).toArray(char[][]::new);
             int[][] antiNode = new int[grid.length][grid[0].length];
 
-            List<List<Point>>antennas = new ArrayList<>(255);
+            List<List<Point3D>>antennas = new ArrayList<>(255);
             for(int i = 0; i < 255; i++)
                 antennas.add(new ArrayList<>());
 
             for(int i = 0; i < grid.length; i++){
                 for(int j = 0; j < grid[0].length; j++) {
                     if(grid[i][j] != '.')
-                        antennas.get(grid[i][j]).add(new Point(i,j));
+                        antennas.get(grid[i][j]).add(new Point3D(i,j));
                 }
             }
 
-            for(List<Point> charAntannas: antennas) {
+            for(List<Point3D> charAntannas: antennas) {
                 if(charAntannas.isEmpty())
                     continue;
 
-                for(Point antannaThis: charAntannas) {
-                    for(Point antannaThat: charAntannas) {
+                for(Point3D antannaThis: charAntannas) {
+                    for(Point3D antannaThat: charAntannas) {
                         if(antannaThis.equals(antannaThat))
                             continue;
-                        Point dir = antannaThis.distanceVector(antannaThat);
-                        Point antiLoc = antannaThis.addVector(dir);
+                        Point3D dir = antannaThis.distanceVector(antannaThat);
+                        Point3D antiLoc = antannaThis.addVector(dir);
                         if(antiLoc.x < 0 || antiLoc.x >= grid.length | antiLoc.y < 0 || antiLoc.y >= grid[0].length)
                             continue;
                         antiNode[(int) antiLoc.x][(int) antiLoc.y] ++;
@@ -92,29 +91,29 @@ public class D8 {
             char[][] grid = ScannerUtil.toList(sc).stream().map(String::toCharArray).toArray(char[][]::new);
             int[][] antiNode = new int[grid.length][grid[0].length];
 
-            List<List<Point>>antennas = new ArrayList<>(255);
+            List<List<Point3D>>antennas = new ArrayList<>(255);
             for(int i = 0; i < 255; i++)
                 antennas.add(new ArrayList<>());
 
             for(int i = 0; i < grid.length; i++){
                 for(int j = 0; j < grid[0].length; j++) {
                     if(grid[i][j] != '.') {
-                        antennas.get(grid[i][j]).add(new Point(i, j));
+                        antennas.get(grid[i][j]).add(new Point3D(i, j));
                         antiNode[i][j] ++;
                     }
                 }
             }
 
-            for(List<Point> charAntannas: antennas) {
+            for(List<Point3D> charAntannas: antennas) {
                 if(charAntannas.isEmpty())
                     continue;
 
-                for(Point antannaThis: charAntannas) {
-                    for(Point antannaThat: charAntannas) {
+                for(Point3D antannaThis: charAntannas) {
+                    for(Point3D antannaThat: charAntannas) {
                         if(antannaThis.equals(antannaThat))
                             continue;
-                        Point dir = antannaThis.distanceVector(antannaThat);
-                        Point antiLoc = antannaThis.addVector(dir);
+                        Point3D dir = antannaThis.distanceVector(antannaThat);
+                        Point3D antiLoc = antannaThis.addVector(dir);
                         while (antiLoc.x >= 0 && !(antiLoc.x >= grid.length | antiLoc.y < 0) && antiLoc.y < grid[0].length) {
                             antiNode[(int) antiLoc.x][(int) antiLoc.y]++;
                             antiLoc = antiLoc.addVector(dir);

@@ -27,7 +27,7 @@ public class Cube {
         this.lengthZ = lengthZ;
     }
 
-    public Cube(Point p1, Point p2) {
+    public Cube(Point3D p1, Point3D p2) {
         this.x = Math.min(p1.x,p2.x);
         this.y = Math.min(p1.y,p2.y);
         this.z = Math.min(p1.z,p2.z);

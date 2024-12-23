@@ -1,12 +1,9 @@
 package merboxel.codeofadvent.y2023;
 
-import merboxel.codeofadvent.structure.Point;
 import merboxel.codeofadvent.util.PatternMatching;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static merboxel.codeofadvent.FileReader.readFileAsScanner;
 
