@@ -2,26 +2,27 @@ package merboxel.codeofadvent.y2024.D24;
 
 import merboxel.codeofadvent.AoC;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class D24P1 extends AoC {
+public class D24P2_3 extends AoC {
 
-    public D24P1(Scanner sc) {
-        super(2024, 24, 1, sc);
+    public D24P2_3(Scanner sc) {
+        super(2024, 24, 2, sc);
     }
 
-    public D24P1() throws IOException {
-        super(2024, 24, 1);
+    public D24P2_3() throws IOException {
+        super(2024, 24, 2);
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println("--------------- Part 1 ---------------");
-        System.out.println(new D24P1().run());
+        System.out.println("--------------- Part 2 ---------------");
+        System.out.println(new D24P2_3().run());
         System.out.println("--------------------------------------");
     }
 
+    // Used for manual looking in notepad
     public String run() {
 
         boolean inputInitWire = true;
@@ -44,10 +45,6 @@ public class D24P1 extends AoC {
                 wires.putIfAbsent(tmp[2], -1);
                 wires.putIfAbsent(tmp[4], -1);
 
-                if(tmp[4].charAt(0) == 'z') {
-                    sortedZ.add(tmp[4]);
-                }
-
                 switch (tmp[1]) {
                     case "AND" -> gates.add(new Gate.AND(tmp[0],tmp[2], tmp[4]));
                     case "OR" -> gates.add(new Gate.OR(tmp[0],tmp[2], tmp[4]));
@@ -55,25 +52,12 @@ public class D24P1 extends AoC {
                 }
             }
         }
-        Set<Gate> usedGates = new HashSet<>();
 
-        while(!gates.isEmpty()) {
-            gates.removeAll(usedGates);
-            for(Gate gate : gates) {
-                if(gate.canEvaluate(wires)) {
-                    usedGates.add(gate);
-                    gate.evaluate(wires);
-                }
-            }
-        }
+        SortedSet<String> sorted = new TreeSet<>(sortedZ);
 
-        long result = 0;
+        gates.stream().map(Gate::toString).forEach(sorted::add);
 
-        for(String z : sortedZ) {
-            result = (result << 1) + wires.get(z);
-        }
-
-        return Long.toString(result);
+        return String.join("\n", sorted);
     }
 
     private abstract static class Gate {
@@ -92,6 +76,20 @@ public class D24P1 extends AoC {
             return true;
         }
 
+        public boolean isOutPut(String output) {
+            return this.output.equals(output);
+        }
+
+        public String getWire1() {
+            return (wire1.compareTo(wire2) < 0) ? wire1 : wire2;
+        }
+
+        public String getWire2() {
+            return (wire1.compareTo(wire2) < 0) ? wire2 : wire1;
+        }
+
+        public abstract String toString();
+
         private static class AND extends Gate {
 
             protected AND(String wire1, String wire2, String output) {
@@ -104,6 +102,11 @@ public class D24P1 extends AoC {
                 result = _wire1 & _wire2;
 
                 wires.put(output, result);
+            }
+
+            @Override
+            public String toString() {
+                return this.output + " = " + this.getWire1() + " AND " + this.getWire2();
             }
         }
 
@@ -120,6 +123,11 @@ public class D24P1 extends AoC {
 
                 wires.put(output, result);
             }
+
+            @Override
+            public String toString() {
+                return this.output + " = " + this.getWire1() + " OR " + this.getWire2();
+            }
         }
 
         private static class XOR extends Gate {
@@ -134,6 +142,11 @@ public class D24P1 extends AoC {
                 result = _wire1 ^ _wire2;
 
                 wires.put(output, result);
+            }
+
+            @Override
+            public String toString() {
+                return this.output + " = " + this.getWire1() + " XOR " + this.getWire2();
             }
         }
     }
