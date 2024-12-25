@@ -48,6 +48,8 @@ public class D20P1 extends AoC {
             }
         }
 
+        assert (s != null);
+
         dfs.add(s);
         while (!dfs.isEmpty()) {
             Position p = dfs.poll();
