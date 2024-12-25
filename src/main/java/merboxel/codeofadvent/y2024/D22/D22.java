@@ -4,8 +4,14 @@ import java.io.IOException;
 
 public class D22 {
 
-    public static void main(String[] args) throws IOException {
+    public D22() {}
+
+    public void run() throws IOException {
         System.out.println(new D22P1().runWithStats());
         System.out.println(new D22P2().runWithStats());
+    }
+
+    public static void main(String[] args) throws IOException {
+        new D22().run();
     }
 }

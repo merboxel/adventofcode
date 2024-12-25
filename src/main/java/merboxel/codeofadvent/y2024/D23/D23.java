@@ -4,8 +4,14 @@ import java.io.IOException;
 
 public class D23 {
 
-    public static void main(String[] args) throws IOException {
+    public D23() {}
+
+    public void run() throws IOException {
         System.out.println(new D23P1().runWithStats());
         System.out.println(new D23P2().runWithStats());
+    }
+
+    public static void main(String[] args) throws IOException {
+        new D23().run();
     }
 }
