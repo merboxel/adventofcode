@@ -21,4 +21,5 @@ target/
 
 
 ### advent of code ###
+# session token is located at src/main/resources/session_token.txt
 *session_token.txt
