@@ -10,12 +10,16 @@ import java.util.Scanner;
 
 public class D22P1 extends AoC {
 
+    private static final int year = 2024;
+    private static final int day = 22;
+    private static final int part = 1;
+
     public D22P1(Scanner sc) {
-        super(2024, 22, 1, sc);
+        super(year, day, part, sc);
     }
 
     D22P1() throws IOException {
-        super(2024, 22, 1);
+        super(year, day, part);
     }
 
     public static void main(String[] args) throws IOException {

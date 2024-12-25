@@ -8,12 +8,16 @@ import java.util.*;
 
 public class D24P1 extends AoC {
 
+    private static final int year = 2024;
+    private static final int day = 24;
+    private static final int part = 1;
+
     public D24P1(Scanner sc) {
-        super(2024, 24, 1, sc);
+        super(year, day, part, sc);
     }
 
     public D24P1() throws IOException {
-        super(2024, 24, 1);
+        super(year, day, part);
     }
 
     public static void main(String[] args) throws IOException {

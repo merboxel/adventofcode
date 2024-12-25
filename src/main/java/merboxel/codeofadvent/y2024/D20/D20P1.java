@@ -7,14 +7,23 @@ import merboxel.codeofadvent.util.ScannerUtil;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.PriorityQueue;
+import java.util.Scanner;
 
 public class D20P1 extends AoC {
+
+    private static final int year = 2024;
+    private static final int day = 20;
+    private static final int part = 1;
 
     static int[][] dir = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
     static int[][] dirForward = {{-2, 0}, {0, 2}, {2, 0}, {0, -2}};
 
+    public D20P1(Scanner sc) {
+        super(year, day, part, sc);
+    }
+
     public D20P1() throws IOException {
-        super(2024, 20, 1);
+        super(year, day, part);
     }
 
     public static void main(String[] args) throws IOException {

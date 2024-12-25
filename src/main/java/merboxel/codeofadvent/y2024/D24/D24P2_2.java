@@ -8,12 +8,16 @@ import java.util.stream.Collectors;
 
 public class D24P2_2 extends AoC {
 
+    private static final int year = 2024;
+    private static final int day = 24;
+    private static final int part = 2;
+
     public D24P2_2(Scanner sc) {
-        super(2024, 24, 2, sc);
+        super(year, day, part, sc);
     }
 
     public D24P2_2() throws IOException {
-        super(2024, 24, 2);
+        super(year, day, part);
     }
 
     public static void main(String[] args) throws IOException {

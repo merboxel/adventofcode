@@ -10,12 +10,16 @@ import java.util.stream.Stream;
 
 public class D23P1 extends AoC {
 
+    private static final int year = 2024;
+    private static final int day = 23;
+    private static final int part = 1;
+
     public D23P1(Scanner sc) {
-        super(2024, 23, 1, sc);
+        super(year, day, part, sc);
     }
 
     public D23P1() throws IOException {
-        super(2024, 23, 1);
+        super(year, day, part);
     }
 
     public static void main(String[] args) throws IOException {
