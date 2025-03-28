@@ -1,14 +1,6 @@
 package merboxel.codeofadvent.y2024;
 
-import merboxel.codeofadvent.annotation.AOC2025;
-import merboxel.codeofadvent.y2024.D20.D20;
-import merboxel.codeofadvent.y2024.D20.D20P1;
-import merboxel.codeofadvent.y2024.D20.D20P2;
-import merboxel.codeofadvent.y2024.D21.D21;
-import merboxel.codeofadvent.y2024.D22.D22;
-import merboxel.codeofadvent.y2024.D23.D23;
-import merboxel.codeofadvent.y2024.D24.D24;
-import merboxel.codeofadvent.y2024.D25.D25;
+import merboxel.codeofadvent.annotation.AOC2024;
 import org.reflections.Reflections;
 
 import java.io.IOException;
@@ -19,7 +11,7 @@ public class Y2024 {
 
     public void run() throws IOException {
 
-        new Reflections(Y2024.class.getPackage().getName()).getTypesAnnotatedWith(AOC2025.class).forEach(c -> {
+        new Reflections(Y2024.class.getPackage().getName()).getTypesAnnotatedWith(AOC2024.class).forEach(c -> {
             try {
                 c.getMethod("run").invoke(c.getDeclaredConstructor().newInstance());
             } catch (Exception e) {
