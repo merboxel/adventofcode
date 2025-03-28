@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
@@ -18,17 +19,15 @@ public class FileReader {
 
         getAoCInputFile(Integer.toString(year),Integer.toString(day));
 
-        //TODO Auto loading file from AoC
-        URL resource = FileReader.class.getClassLoader().getResource(year+"/"+day+".txt");
-        assert resource != null;
-        return new Scanner(resource.openStream());
+        Path path = Paths.get("src", "main", "resources",
+                Integer.toString(year), Integer.toString(day)+ ".txt");
+        return new Scanner(path);
     }
 
     public static Scanner readFileAsScanner(int year, String day) throws IOException {
 
         getAoCInputFile(Integer.toString(year),day);
 
-        //TODO Auto loading file from AoC
         URL resource = FileReader.class.getClassLoader().getResource(year+"/"+day+".txt");
         assert resource != null;
         return new Scanner(resource.openStream());
@@ -49,7 +48,6 @@ public class FileReader {
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
-        con.setRequestProperty("User-Agent", "Java 21 - Automation");
         con.setRequestProperty("Cookie","session="+sessionToken);
 
         int status = con.getResponseCode();
@@ -60,9 +58,12 @@ public class FileReader {
 
             ArrayList<String> response = readStream(streamReader);
 
-            FileWriter myWriter = new FileWriter("src/main/resources/" + year + "/" + day + ".txt");
-            myWriter.write(String.join("\r\n", response));
-            myWriter.close();
+            try (FileWriter myWriter = new FileWriter("src/main/resources/" + year + "/" + day + ".txt")) {
+                myWriter.write(String.join("\r\n", response));
+                myWriter.flush();
+            } finally {
+                streamReader.close();
+            }
         } else {
             streamReader = new InputStreamReader(con.getErrorStream());
             ArrayList<String> response = readStream(streamReader);

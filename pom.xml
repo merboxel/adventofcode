@@ -7,6 +7,14 @@
   <name>Advent-of-Code</name>
   <url>https://github.com/merboxel/adventofcode</url>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>0.10.2</version>
+    </dependency>
+  </dependencies>
+
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>

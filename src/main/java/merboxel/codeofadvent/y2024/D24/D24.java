@@ -1,7 +1,10 @@
 package merboxel.codeofadvent.y2024.D24;
 
+import merboxel.codeofadvent.annotation.AOC2025;
+
 import java.io.IOException;
 
+@AOC2025
 public class D24 {
 
     public D24() {}
