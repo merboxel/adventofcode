@@ -1,7 +1,5 @@
 package merboxel.codeofadvent.y2025.D2;
 
-import merboxel.codeofadvent.y2025.D1.D1P1;
-
 import java.io.IOException;
 
 public class D2 {
@@ -13,7 +11,7 @@ public class D2 {
     }
 
     public void run() throws IOException {
-        System.out.println(new D1P1().runWithStats());
-//        System.out.println(new D1P2().runWithStats());
+        System.out.println(new D2P1().runWithStats());
+        System.out.println(new D2P2().runWithStats());
     }
 }

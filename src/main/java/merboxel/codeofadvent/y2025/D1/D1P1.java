@@ -24,7 +24,7 @@ public class D1P1 extends AoC {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println("--------------- Part 2 ---------------");
+        System.out.println("--------------- Part 1 ---------------");
         System.out.println(new D1P1().run());
         System.out.println("--------------------------------------");
     }
