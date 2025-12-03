@@ -12,7 +12,7 @@ public class D1P2 extends AoC {
 
     private static final int year = 2025;
     private static final int day = 1;
-    private static final int part = 1;
+    private static final int part = 2;
 
     public D1P2(Scanner sc) throws IOException {
         super(year, day, part, sc);
