@@ -49,7 +49,7 @@ public class D11P1 extends AoC {
         return Long.toString(result);
     }
 
-    public long recursive(HashMap<String, Long> routes, Map<String, String[]> devices, String input) {
+    public long recursive(Map<String, Long> routes, Map<String, String[]> devices, String input) {
         if(routes.containsKey(input)) {
             return routes.get(input);
         }
